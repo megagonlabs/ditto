@@ -1,0 +1,905 @@
+[
+  {
+    "name": "wdc_all_small",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/all/train.txt.small",
+    "validset": "data/wdc/all/valid.txt.small",
+    "testset": "data/wdc/all/test.txt"
+  },
+  {
+    "name": "wdc_cameras_small",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/cameras/train.txt.small",
+    "validset": "data/wdc/cameras/valid.txt.small",
+    "testset": "data/wdc/cameras/test.txt"
+  },
+  {
+    "name": "wdc_computers_small",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/computers/train.txt.small",
+    "validset": "data/wdc/computers/valid.txt.small",
+    "testset": "data/wdc/computers/test.txt"
+  },
+  {
+    "name": "wdc_shoes_small",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/shoes/train.txt.small",
+    "validset": "data/wdc/shoes/valid.txt.small",
+    "testset": "data/wdc/shoes/test.txt"
+  },
+  {
+    "name": "wdc_watches_small",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/watches/train.txt.small",
+    "validset": "data/wdc/watches/valid.txt.small",
+    "testset": "data/wdc/watches/test.txt"
+  },
+  {
+    "name": "wdc_all_medium",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/all/train.txt.medium",
+    "validset": "data/wdc/all/valid.txt.medium",
+    "testset": "data/wdc/all/test.txt"
+  },
+  {
+    "name": "wdc_cameras_medium",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/cameras/train.txt.medium",
+    "validset": "data/wdc/cameras/valid.txt.medium",
+    "testset": "data/wdc/cameras/test.txt"
+  },
+  {
+    "name": "wdc_computers_medium",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/computers/train.txt.medium",
+    "validset": "data/wdc/computers/valid.txt.medium",
+    "testset": "data/wdc/computers/test.txt"
+  },
+  {
+    "name": "wdc_shoes_medium",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/shoes/train.txt.medium",
+    "validset": "data/wdc/shoes/valid.txt.medium",
+    "testset": "data/wdc/shoes/test.txt"
+  },
+  {
+    "name": "wdc_watches_medium",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/watches/train.txt.medium",
+    "validset": "data/wdc/watches/valid.txt.medium",
+    "testset": "data/wdc/watches/test.txt"
+  },
+  {
+    "name": "wdc_all_large",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/all/train.txt.large",
+    "validset": "data/wdc/all/valid.txt.large",
+    "testset": "data/wdc/all/test.txt"
+  },
+  {
+    "name": "wdc_cameras_large",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/cameras/train.txt.large",
+    "validset": "data/wdc/cameras/valid.txt.large",
+    "testset": "data/wdc/cameras/test.txt"
+  },
+  {
+    "name": "wdc_computers_large",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/computers/train.txt.large",
+    "validset": "data/wdc/computers/valid.txt.large",
+    "testset": "data/wdc/computers/test.txt"
+  },
+  {
+    "name": "wdc_shoes_large",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/shoes/train.txt.large",
+    "validset": "data/wdc/shoes/valid.txt.large",
+    "testset": "data/wdc/shoes/test.txt"
+  },
+  {
+    "name": "wdc_watches_large",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/watches/train.txt.large",
+    "validset": "data/wdc/watches/valid.txt.large",
+    "testset": "data/wdc/watches/test.txt"
+  },
+  {
+    "name": "wdc_all_xlarge",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/all/train.txt.xlarge",
+    "validset": "data/wdc/all/valid.txt.xlarge",
+    "testset": "data/wdc/all/test.txt"
+  },
+  {
+    "name": "wdc_cameras_xlarge",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/cameras/train.txt.xlarge",
+    "validset": "data/wdc/cameras/valid.txt.xlarge",
+    "testset": "data/wdc/cameras/test.txt"
+  },
+  {
+    "name": "wdc_computers_xlarge",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/computers/train.txt.xlarge",
+    "validset": "data/wdc/computers/valid.txt.xlarge",
+    "testset": "data/wdc/computers/test.txt"
+  },
+  {
+    "name": "wdc_shoes_xlarge",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/shoes/train.txt.xlarge",
+    "validset": "data/wdc/shoes/valid.txt.xlarge",
+    "testset": "data/wdc/shoes/test.txt"
+  },
+  {
+    "name": "wdc_watches_xlarge",
+    "task_type": "classification",
+    "vocab": ["0", "1"],
+    "trainset": "data/wdc/watches/train.txt.xlarge",
+    "validset": "data/wdc/watches/valid.txt.xlarge",
+    "testset": "data/wdc/watches/test.txt"
+  },
+  {
+  "name": "Dirty/DBLP-ACM",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Dirty/DBLP-ACM/train.txt",
+  "validset": "data/er_magellan/Dirty/DBLP-ACM/valid.txt",
+  "testset": "data/er_magellan/Dirty/DBLP-ACM/test.txt"
+  },
+  {
+  "name": "Dirty/DBLP-GoogleScholar",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Dirty/DBLP-GoogleScholar/train.txt",
+  "validset": "data/er_magellan/Dirty/DBLP-GoogleScholar/valid.txt",
+  "testset": "data/er_magellan/Dirty/DBLP-GoogleScholar/test.txt"
+  },
+  {
+  "name": "Dirty/iTunes-Amazon",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Dirty/iTunes-Amazon/train.txt",
+  "validset": "data/er_magellan/Dirty/iTunes-Amazon/valid.txt",
+  "testset": "data/er_magellan/Dirty/iTunes-Amazon/test.txt"
+  },
+  {
+  "name": "Dirty/Walmart-Amazon",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Dirty/Walmart-Amazon/train.txt",
+  "validset": "data/er_magellan/Dirty/Walmart-Amazon/valid.txt",
+  "testset": "data/er_magellan/Dirty/Walmart-Amazon/test.txt"
+  },
+  {
+  "name": "Structured/Amazon-Google",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Structured/Amazon-Google/train.txt",
+  "validset": "data/er_magellan/Structured/Amazon-Google/valid.txt",
+  "testset": "data/er_magellan/Structured/Amazon-Google/test.txt"
+  },
+  {
+  "name": "Structured/Beer",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Structured/Beer/train.txt",
+  "validset": "data/er_magellan/Structured/Beer/valid.txt",
+  "testset": "data/er_magellan/Structured/Beer/test.txt"
+  },
+  {
+  "name": "Structured/DBLP-ACM",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Structured/DBLP-ACM/train.txt",
+  "validset": "data/er_magellan/Structured/DBLP-ACM/valid.txt",
+  "testset": "data/er_magellan/Structured/DBLP-ACM/test.txt"
+  },
+  {
+  "name": "Structured/DBLP-GoogleScholar",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Structured/DBLP-GoogleScholar/train.txt",
+  "validset": "data/er_magellan/Structured/DBLP-GoogleScholar/valid.txt",
+  "testset": "data/er_magellan/Structured/DBLP-GoogleScholar/test.txt"
+  },
+  {
+  "name": "Structured/Fodors-Zagats",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Structured/Fodors-Zagats/train.txt",
+  "validset": "data/er_magellan/Structured/Fodors-Zagats/valid.txt",
+  "testset": "data/er_magellan/Structured/Fodors-Zagats/test.txt"
+  },
+  {
+  "name": "Structured/iTunes-Amazon",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Structured/iTunes-Amazon/train.txt",
+  "validset": "data/er_magellan/Structured/iTunes-Amazon/valid.txt",
+  "testset": "data/er_magellan/Structured/iTunes-Amazon/test.txt"
+  },
+  {
+  "name": "Structured/Walmart-Amazon",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Structured/Walmart-Amazon/train.txt",
+  "validset": "data/er_magellan/Structured/Walmart-Amazon/valid.txt",
+  "testset": "data/er_magellan/Structured/Walmart-Amazon/test.txt"
+  },
+  {
+  "name": "Textual/Abt-Buy",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Textual/Abt-Buy/train.txt",
+  "validset": "data/er_magellan/Textual/Abt-Buy/valid.txt",
+  "testset": "data/er_magellan/Textual/Abt-Buy/test.txt"
+  },
+  {
+  "name": "Textual/Company",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/er_magellan/Textual/Company/train.txt.tfidf",
+  "validset": "data/er_magellan/Textual/Company/valid.txt.tfidf",
+  "testset": "data/er_magellan/Textual/Company/test.txt.tfidf"
+  },
+{
+  "name": "wdc_all_title_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title/train.txt.small",
+  "validset": "data/wdc/all/title/valid.txt.small",
+  "testset": "data/wdc/all/title/test.txt"
+},
+{
+  "name": "wdc_all_title_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title/train.txt.medium",
+  "validset": "data/wdc/all/title/valid.txt.medium",
+  "testset": "data/wdc/all/title/test.txt"
+},
+{
+  "name": "wdc_all_title_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title/train.txt.large",
+  "validset": "data/wdc/all/title/valid.txt.large",
+  "testset": "data/wdc/all/title/test.txt"
+},
+{
+  "name": "wdc_all_title_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title/train.txt.xlarge",
+  "validset": "data/wdc/all/title/valid.txt.xlarge",
+  "testset": "data/wdc/all/title/test.txt"
+},
+{
+  "name": "wdc_shoes_title_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title/train.txt.small",
+  "validset": "data/wdc/shoes/title/valid.txt.small",
+  "testset": "data/wdc/shoes/title/test.txt"
+},
+{
+  "name": "wdc_shoes_title_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title/train.txt.medium",
+  "validset": "data/wdc/shoes/title/valid.txt.medium",
+  "testset": "data/wdc/shoes/title/test.txt"
+},
+{
+  "name": "wdc_shoes_title_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title/train.txt.large",
+  "validset": "data/wdc/shoes/title/valid.txt.large",
+  "testset": "data/wdc/shoes/title/test.txt"
+},
+{
+  "name": "wdc_shoes_title_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title/train.txt.xlarge",
+  "validset": "data/wdc/shoes/title/valid.txt.xlarge",
+  "testset": "data/wdc/shoes/title/test.txt"
+},
+{
+  "name": "wdc_computers_title_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title/train.txt.small",
+  "validset": "data/wdc/computers/title/valid.txt.small",
+  "testset": "data/wdc/computers/title/test.txt"
+},
+{
+  "name": "wdc_computers_title_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title/train.txt.medium",
+  "validset": "data/wdc/computers/title/valid.txt.medium",
+  "testset": "data/wdc/computers/title/test.txt"
+},
+{
+  "name": "wdc_computers_title_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title/train.txt.large",
+  "validset": "data/wdc/computers/title/valid.txt.large",
+  "testset": "data/wdc/computers/title/test.txt"
+},
+{
+  "name": "wdc_computers_title_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title/train.txt.xlarge",
+  "validset": "data/wdc/computers/title/valid.txt.xlarge",
+  "testset": "data/wdc/computers/title/test.txt"
+},
+{
+  "name": "wdc_watches_title_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title/train.txt.small",
+  "validset": "data/wdc/watches/title/valid.txt.small",
+  "testset": "data/wdc/watches/title/test.txt"
+},
+{
+  "name": "wdc_watches_title_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title/train.txt.medium",
+  "validset": "data/wdc/watches/title/valid.txt.medium",
+  "testset": "data/wdc/watches/title/test.txt"
+},
+{
+  "name": "wdc_watches_title_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title/train.txt.large",
+  "validset": "data/wdc/watches/title/valid.txt.large",
+  "testset": "data/wdc/watches/title/test.txt"
+},
+{
+  "name": "wdc_watches_title_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title/train.txt.xlarge",
+  "validset": "data/wdc/watches/title/valid.txt.xlarge",
+  "testset": "data/wdc/watches/title/test.txt"
+},
+{
+  "name": "wdc_cameras_title_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title/train.txt.small",
+  "validset": "data/wdc/cameras/title/valid.txt.small",
+  "testset": "data/wdc/cameras/title/test.txt"
+},
+{
+  "name": "wdc_cameras_title_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title/train.txt.medium",
+  "validset": "data/wdc/cameras/title/valid.txt.medium",
+  "testset": "data/wdc/cameras/title/test.txt"
+},
+{
+  "name": "wdc_cameras_title_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title/train.txt.large",
+  "validset": "data/wdc/cameras/title/valid.txt.large",
+  "testset": "data/wdc/cameras/title/test.txt"
+},
+{
+  "name": "wdc_cameras_title_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title/train.txt.xlarge",
+  "validset": "data/wdc/cameras/title/valid.txt.xlarge",
+  "testset": "data/wdc/cameras/title/test.txt"
+},
+{
+  "name": "wdc_all_title_description_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title_description/train.txt.small",
+  "validset": "data/wdc/all/title_description/valid.txt.small",
+  "testset": "data/wdc/all/title_description/test.txt"
+},
+{
+  "name": "wdc_all_title_description_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title_description/train.txt.medium",
+  "validset": "data/wdc/all/title_description/valid.txt.medium",
+  "testset": "data/wdc/all/title_description/test.txt"
+},
+{
+  "name": "wdc_all_title_description_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title_description/train.txt.large",
+  "validset": "data/wdc/all/title_description/valid.txt.large",
+  "testset": "data/wdc/all/title_description/test.txt"
+},
+{
+  "name": "wdc_all_title_description_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title_description/train.txt.xlarge",
+  "validset": "data/wdc/all/title_description/valid.txt.xlarge",
+  "testset": "data/wdc/all/title_description/test.txt"
+},
+{
+  "name": "wdc_shoes_title_description_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title_description/train.txt.small",
+  "validset": "data/wdc/shoes/title_description/valid.txt.small",
+  "testset": "data/wdc/shoes/title_description/test.txt"
+},
+{
+  "name": "wdc_shoes_title_description_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title_description/train.txt.medium",
+  "validset": "data/wdc/shoes/title_description/valid.txt.medium",
+  "testset": "data/wdc/shoes/title_description/test.txt"
+},
+{
+  "name": "wdc_shoes_title_description_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title_description/train.txt.large",
+  "validset": "data/wdc/shoes/title_description/valid.txt.large",
+  "testset": "data/wdc/shoes/title_description/test.txt"
+},
+{
+  "name": "wdc_shoes_title_description_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title_description/train.txt.xlarge",
+  "validset": "data/wdc/shoes/title_description/valid.txt.xlarge",
+  "testset": "data/wdc/shoes/title_description/test.txt"
+},
+{
+  "name": "wdc_computers_title_description_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title_description/train.txt.small",
+  "validset": "data/wdc/computers/title_description/valid.txt.small",
+  "testset": "data/wdc/computers/title_description/test.txt"
+},
+{
+  "name": "wdc_computers_title_description_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title_description/train.txt.medium",
+  "validset": "data/wdc/computers/title_description/valid.txt.medium",
+  "testset": "data/wdc/computers/title_description/test.txt"
+},
+{
+  "name": "wdc_computers_title_description_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title_description/train.txt.large",
+  "validset": "data/wdc/computers/title_description/valid.txt.large",
+  "testset": "data/wdc/computers/title_description/test.txt"
+},
+{
+  "name": "wdc_computers_title_description_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title_description/train.txt.xlarge",
+  "validset": "data/wdc/computers/title_description/valid.txt.xlarge",
+  "testset": "data/wdc/computers/title_description/test.txt"
+},
+{
+  "name": "wdc_watches_title_description_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title_description/train.txt.small",
+  "validset": "data/wdc/watches/title_description/valid.txt.small",
+  "testset": "data/wdc/watches/title_description/test.txt"
+},
+{
+  "name": "wdc_watches_title_description_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title_description/train.txt.medium",
+  "validset": "data/wdc/watches/title_description/valid.txt.medium",
+  "testset": "data/wdc/watches/title_description/test.txt"
+},
+{
+  "name": "wdc_watches_title_description_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title_description/train.txt.large",
+  "validset": "data/wdc/watches/title_description/valid.txt.large",
+  "testset": "data/wdc/watches/title_description/test.txt"
+},
+{
+  "name": "wdc_watches_title_description_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title_description/train.txt.xlarge",
+  "validset": "data/wdc/watches/title_description/valid.txt.xlarge",
+  "testset": "data/wdc/watches/title_description/test.txt"
+},
+{
+  "name": "wdc_cameras_title_description_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title_description/train.txt.small",
+  "validset": "data/wdc/cameras/title_description/valid.txt.small",
+  "testset": "data/wdc/cameras/title_description/test.txt"
+},
+{
+  "name": "wdc_cameras_title_description_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title_description/train.txt.medium",
+  "validset": "data/wdc/cameras/title_description/valid.txt.medium",
+  "testset": "data/wdc/cameras/title_description/test.txt"
+},
+{
+  "name": "wdc_cameras_title_description_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title_description/train.txt.large",
+  "validset": "data/wdc/cameras/title_description/valid.txt.large",
+  "testset": "data/wdc/cameras/title_description/test.txt"
+},
+{
+  "name": "wdc_cameras_title_description_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title_description/train.txt.xlarge",
+  "validset": "data/wdc/cameras/title_description/valid.txt.xlarge",
+  "testset": "data/wdc/cameras/title_description/test.txt"
+},
+{
+  "name": "wdc_all_title_description_brand_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title_description_brand/train.txt.small",
+  "validset": "data/wdc/all/title_description_brand/valid.txt.small",
+  "testset": "data/wdc/all/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_all_title_description_brand_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title_description_brand/train.txt.medium",
+  "validset": "data/wdc/all/title_description_brand/valid.txt.medium",
+  "testset": "data/wdc/all/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_all_title_description_brand_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title_description_brand/train.txt.large",
+  "validset": "data/wdc/all/title_description_brand/valid.txt.large",
+  "testset": "data/wdc/all/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_all_title_description_brand_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title_description_brand/train.txt.xlarge",
+  "validset": "data/wdc/all/title_description_brand/valid.txt.xlarge",
+  "testset": "data/wdc/all/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_shoes_title_description_brand_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title_description_brand/train.txt.small",
+  "validset": "data/wdc/shoes/title_description_brand/valid.txt.small",
+  "testset": "data/wdc/shoes/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_shoes_title_description_brand_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title_description_brand/train.txt.medium",
+  "validset": "data/wdc/shoes/title_description_brand/valid.txt.medium",
+  "testset": "data/wdc/shoes/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_shoes_title_description_brand_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title_description_brand/train.txt.large",
+  "validset": "data/wdc/shoes/title_description_brand/valid.txt.large",
+  "testset": "data/wdc/shoes/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_shoes_title_description_brand_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title_description_brand/train.txt.xlarge",
+  "validset": "data/wdc/shoes/title_description_brand/valid.txt.xlarge",
+  "testset": "data/wdc/shoes/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_computers_title_description_brand_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title_description_brand/train.txt.small",
+  "validset": "data/wdc/computers/title_description_brand/valid.txt.small",
+  "testset": "data/wdc/computers/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_computers_title_description_brand_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title_description_brand/train.txt.medium",
+  "validset": "data/wdc/computers/title_description_brand/valid.txt.medium",
+  "testset": "data/wdc/computers/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_computers_title_description_brand_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title_description_brand/train.txt.large",
+  "validset": "data/wdc/computers/title_description_brand/valid.txt.large",
+  "testset": "data/wdc/computers/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_computers_title_description_brand_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title_description_brand/train.txt.xlarge",
+  "validset": "data/wdc/computers/title_description_brand/valid.txt.xlarge",
+  "testset": "data/wdc/computers/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_watches_title_description_brand_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title_description_brand/train.txt.small",
+  "validset": "data/wdc/watches/title_description_brand/valid.txt.small",
+  "testset": "data/wdc/watches/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_watches_title_description_brand_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title_description_brand/train.txt.medium",
+  "validset": "data/wdc/watches/title_description_brand/valid.txt.medium",
+  "testset": "data/wdc/watches/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_watches_title_description_brand_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title_description_brand/train.txt.large",
+  "validset": "data/wdc/watches/title_description_brand/valid.txt.large",
+  "testset": "data/wdc/watches/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_watches_title_description_brand_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title_description_brand/train.txt.xlarge",
+  "validset": "data/wdc/watches/title_description_brand/valid.txt.xlarge",
+  "testset": "data/wdc/watches/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_cameras_title_description_brand_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title_description_brand/train.txt.small",
+  "validset": "data/wdc/cameras/title_description_brand/valid.txt.small",
+  "testset": "data/wdc/cameras/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_cameras_title_description_brand_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title_description_brand/train.txt.medium",
+  "validset": "data/wdc/cameras/title_description_brand/valid.txt.medium",
+  "testset": "data/wdc/cameras/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_cameras_title_description_brand_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title_description_brand/train.txt.large",
+  "validset": "data/wdc/cameras/title_description_brand/valid.txt.large",
+  "testset": "data/wdc/cameras/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_cameras_title_description_brand_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title_description_brand/train.txt.xlarge",
+  "validset": "data/wdc/cameras/title_description_brand/valid.txt.xlarge",
+  "testset": "data/wdc/cameras/title_description_brand/test.txt"
+},
+{
+  "name": "wdc_all_title_description_brand_specTableContent_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title_description_brand_specTableContent/train.txt.small",
+  "validset": "data/wdc/all/title_description_brand_specTableContent/valid.txt.small",
+  "testset": "data/wdc/all/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_all_title_description_brand_specTableContent_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title_description_brand_specTableContent/train.txt.medium",
+  "validset": "data/wdc/all/title_description_brand_specTableContent/valid.txt.medium",
+  "testset": "data/wdc/all/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_all_title_description_brand_specTableContent_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title_description_brand_specTableContent/train.txt.large",
+  "validset": "data/wdc/all/title_description_brand_specTableContent/valid.txt.large",
+  "testset": "data/wdc/all/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_all_title_description_brand_specTableContent_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/all/title_description_brand_specTableContent/train.txt.xlarge",
+  "validset": "data/wdc/all/title_description_brand_specTableContent/valid.txt.xlarge",
+  "testset": "data/wdc/all/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_shoes_title_description_brand_specTableContent_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title_description_brand_specTableContent/train.txt.small",
+  "validset": "data/wdc/shoes/title_description_brand_specTableContent/valid.txt.small",
+  "testset": "data/wdc/shoes/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_shoes_title_description_brand_specTableContent_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title_description_brand_specTableContent/train.txt.medium",
+  "validset": "data/wdc/shoes/title_description_brand_specTableContent/valid.txt.medium",
+  "testset": "data/wdc/shoes/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_shoes_title_description_brand_specTableContent_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title_description_brand_specTableContent/train.txt.large",
+  "validset": "data/wdc/shoes/title_description_brand_specTableContent/valid.txt.large",
+  "testset": "data/wdc/shoes/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_shoes_title_description_brand_specTableContent_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/shoes/title_description_brand_specTableContent/train.txt.xlarge",
+  "validset": "data/wdc/shoes/title_description_brand_specTableContent/valid.txt.xlarge",
+  "testset": "data/wdc/shoes/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_computers_title_description_brand_specTableContent_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title_description_brand_specTableContent/train.txt.small",
+  "validset": "data/wdc/computers/title_description_brand_specTableContent/valid.txt.small",
+  "testset": "data/wdc/computers/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_computers_title_description_brand_specTableContent_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title_description_brand_specTableContent/train.txt.medium",
+  "validset": "data/wdc/computers/title_description_brand_specTableContent/valid.txt.medium",
+  "testset": "data/wdc/computers/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_computers_title_description_brand_specTableContent_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title_description_brand_specTableContent/train.txt.large",
+  "validset": "data/wdc/computers/title_description_brand_specTableContent/valid.txt.large",
+  "testset": "data/wdc/computers/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_computers_title_description_brand_specTableContent_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/computers/title_description_brand_specTableContent/train.txt.xlarge",
+  "validset": "data/wdc/computers/title_description_brand_specTableContent/valid.txt.xlarge",
+  "testset": "data/wdc/computers/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_watches_title_description_brand_specTableContent_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title_description_brand_specTableContent/train.txt.small",
+  "validset": "data/wdc/watches/title_description_brand_specTableContent/valid.txt.small",
+  "testset": "data/wdc/watches/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_watches_title_description_brand_specTableContent_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title_description_brand_specTableContent/train.txt.medium",
+  "validset": "data/wdc/watches/title_description_brand_specTableContent/valid.txt.medium",
+  "testset": "data/wdc/watches/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_watches_title_description_brand_specTableContent_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title_description_brand_specTableContent/train.txt.large",
+  "validset": "data/wdc/watches/title_description_brand_specTableContent/valid.txt.large",
+  "testset": "data/wdc/watches/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_watches_title_description_brand_specTableContent_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/watches/title_description_brand_specTableContent/train.txt.xlarge",
+  "validset": "data/wdc/watches/title_description_brand_specTableContent/valid.txt.xlarge",
+  "testset": "data/wdc/watches/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_cameras_title_description_brand_specTableContent_small",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title_description_brand_specTableContent/train.txt.small",
+  "validset": "data/wdc/cameras/title_description_brand_specTableContent/valid.txt.small",
+  "testset": "data/wdc/cameras/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_cameras_title_description_brand_specTableContent_medium",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title_description_brand_specTableContent/train.txt.medium",
+  "validset": "data/wdc/cameras/title_description_brand_specTableContent/valid.txt.medium",
+  "testset": "data/wdc/cameras/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_cameras_title_description_brand_specTableContent_large",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title_description_brand_specTableContent/train.txt.large",
+  "validset": "data/wdc/cameras/title_description_brand_specTableContent/valid.txt.large",
+  "testset": "data/wdc/cameras/title_description_brand_specTableContent/test.txt"
+},
+{
+  "name": "wdc_cameras_title_description_brand_specTableContent_xlarge",
+  "task_type": "classification",
+  "vocab": ["0", "1"],
+  "trainset": "data/wdc/cameras/title_description_brand_specTableContent/train.txt.xlarge",
+  "validset": "data/wdc/cameras/title_description_brand_specTableContent/valid.txt.xlarge",
+  "testset": "data/wdc/cameras/title_description_brand_specTableContent/test.txt"
+}]
