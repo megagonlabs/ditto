@@ -9,7 +9,7 @@ For more technical details, see the [Deep Entity Matching with Pre-Trained Langu
 * Python 3.7.5
 * PyTorch 1.4
 * HuggingFace Transformers 
-* Spacy with the ``em_core_web_lg`` models
+* Spacy with the ``en_core_web_lg`` models
 * NVIDIA Apex (fp16 training)
 
 Install required packages
