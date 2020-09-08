@@ -19,6 +19,7 @@ from scipy.special import softmax
 
 sys.path.insert(0, "Snippext_public")
 from snippext.model import MultiTaskNet
+from ditto.exceptions import ModelNotFoundError
 from ditto.dataset import DittoDataset
 from ditto.summarize import Summarizer
 from ditto.knowledge import *
@@ -165,6 +166,9 @@ def load_model(task, path, lm, use_gpu, fp16=True):
     """
     # load models
     checkpoint = os.path.join(path, '%s.pt' % task)
+    if not os.path.exists(checkpoint):
+        raise ModelNotFoundError(checkpoint)
+
     configs = json.load(open('configs.json'))
     configs = {conf['name'] : conf for conf in configs}
 
@@ -176,11 +180,10 @@ def load_model(task, path, lm, use_gpu, fp16=True):
     config = configs[task]
     config_list = [config]
     model = MultiTaskNet([config], device, True, lm=lm)
-    try:
-        saved_state = torch.load(checkpoint, map_location=lambda storage, loc: storage)
-        model.load_state_dict(saved_state)
-    except:
-        pass
+
+    saved_state = torch.load(checkpoint, map_location=lambda storage, loc: storage)
+    model.load_state_dict(saved_state)
+
 
     model = model.to(device)
 
