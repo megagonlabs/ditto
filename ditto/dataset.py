@@ -1,9 +1,5 @@
-import numpy as np
-import torch
-import sys
+import random
 
-from torch.utils import data
-from transformers import DistilBertTokenizer, BertTokenizer, AlbertTokenizer
 from .augment import Augmenter
 from snippext.dataset import SnippextDataset, get_tokenizer
 
@@ -42,9 +38,11 @@ class DittoDataset(SnippextDataset):
         self.taskname = taskname
 
         # augmentation op
-        if augment_op != None:
+        self.augment_op = augment_op
+        if augment_op == 't5':
+            self.load_t5_examples(source)
+        elif augment_op != None:
             self.augmenter = Augmenter()
-            self.augment_op = augment_op
         else:
             self.augmenter = None
 
@@ -86,7 +84,10 @@ class DittoDataset(SnippextDataset):
         words, tags = self.sents[idx], self.tags_li[idx]
         original = words
 
-        if self.augmenter != None:
+        if self.augment_op == 't5':
+            if len(self.augmented_examples[idx]) > 0:
+                words, _ = random.choice(self.augmented_examples[idx])
+        elif self.augmenter != None:
             words = self.augmenter.augment_sent(words, self.augment_op)
 
         if ' [SEP] ' in words:
