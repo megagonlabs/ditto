@@ -1,0 +1,10 @@
+{
+    "query_type": "predict",
+    "left": {"name": "sony bravia theater black micro system davis50b", "description": "sony bravia theater black micro system davis50b 5.1-channel surround sound golf ball-sized speakers compact design s-air digital wireless capability hdmi connectivity bravia sync digital cinema sound ( dcs ) technology s-master digital amplifier portable audio enhancer black finish", "price": "", "cluster_id": 6},
+    "right": {"name": "sony bravia dav-is50 / b home theater system", "description": "dvd player , 5.1 speakers 1 disc ( s ) progressive scan 450w rms dolby digital ex , dolby pro logic , dolby pro logic ii", "price": "", "cluster_id": 6},
+    "task": "Textual/Abt-Buy",
+    "use_gpu": "TRUE",
+    "fp16": "TRUE",
+    "max_len": 256,
+    "lm": "roberta"
+}

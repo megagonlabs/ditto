@@ -266,12 +266,12 @@ def query():
     query_type = query_request['query_type']
     task = query_request.get('task', 'Structured/iTunes-Amazon')
     lm = query_request.get('lm', 'roberta')
-    use_gpu = query_request.get('use_gpu', True)
-    fp16 = query_request.get('fp16', True)
+    use_gpu = bool(query_request.get('use_gpu', True))
+    fp16 = bool(query_request.get('fp16', True))
     checkpoint_path = 'checkpoints/'
     max_len = query_request.get('max_len', 256)
     dk = query_request.get('dk', None)
-    summarize = query_request.get('summarize', False)
+    summarize = bool(query_request.get('summarize', False))
 
     global config
     global model
@@ -291,15 +291,22 @@ def query():
         else:
             dk_injector = GeneralDKInjector(config, dk)
 
-    if query_type == 'cluster':
+    if query_type in ['cluster', 'clustering']:
         records = query_request['records']
-        result = cluster(records,
+        for rec in records:
+            if 'cluster_id' in rec:
+                del rec['cluster_id']
+        components = cluster(records,
                          config, model,
                          summarizer=summarizer,
                          max_len=max_len,
                          lm=lm,
                          dk_injector=dk_injector)
-    elif query_type == 'predict':
+        for cc in components:
+            rec = records[cc[0]]
+            rec['cluster_id'] = cc[1]
+        result = records
+    elif query_type in ['predict', 'attr_score']:
         left = query_request['left']
         right = query_request['right']
         result = predict_pair(left, right,
