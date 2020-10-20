@@ -11,7 +11,8 @@ class DittoDataset(SnippextDataset):
                  max_len=512,
                  lm='distilbert',
                  size=None,
-                 augment_op=None):
+                 augment_op=None,
+                 balance=False):
         self.tokenizer = get_tokenizer(lm=lm)
 
         # tokens and tags
@@ -46,6 +47,21 @@ class DittoDataset(SnippextDataset):
         else:
             self.augmenter = None
 
+        self.balance = balance
+        if balance:
+            # sort by labels
+            self.pos_sents = []
+            self.neg_sents = []
+            self.neg_cnt = []
+
+            for sid, (sent, lbl) in enumerate(zip(sents, tags_li)):
+                if int(lbl) == 0:
+                    self.neg_sents.append(sid)
+                    self.neg_cnt.append(0)
+                else:
+                    self.pos_sents.append(sid)
+
+
     def read_classification_file(self, path):
         """Read a train/eval classification dataset from file
 
@@ -73,6 +89,14 @@ class DittoDataset(SnippextDataset):
                 print('error @', line.strip())
         return sents, labels
 
+
+    def __len__(self):
+        if self.balance:
+            return len(self.pos_sents) * 2
+        else:
+            return len(self.sents)
+
+
     def __getitem__(self, idx):
         """Return the ith item of in the dataset.
 
@@ -81,6 +105,17 @@ class DittoDataset(SnippextDataset):
         Returns (TODO):
             words, x, is_heads, tags, mask, y, seqlen, self.taskname
         """
+        if self.balance:
+            if idx < len(self.pos_sents):
+                idx = self.pos_sents[idx]
+            else:
+                N = len(self.pos_sents)
+                idx -= N
+                new_idx = self.neg_sents[(idx + \
+                        self.neg_cnt[idx] * N) % len(self.neg_sents)]
+                self.neg_cnt[idx] += 1
+                idx = new_idx
+
         words, tags = self.sents[idx], self.tags_li[idx]
         original = words
 

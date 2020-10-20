@@ -172,7 +172,7 @@ def load_model(task, path, lm, use_gpu, fp16=True):
     configs = json.load(open('configs.json'))
     configs = {conf['name'] : conf for conf in configs}
 
-    if hp.use_gpu:
+    if use_gpu:
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
     else:
         device = 'cpu'

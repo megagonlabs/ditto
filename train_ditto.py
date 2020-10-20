@@ -27,6 +27,7 @@ if __name__=="__main__":
     parser.add_argument("--alpha_aug", type=float, default=0.8)
     parser.add_argument("--dk", type=str, default=None)
     parser.add_argument("--summarize", dest="summarize", action="store_true")
+    parser.add_argument("--balance", dest="balance", action="store_true")
     parser.add_argument("--size", type=int, default=None)
 
     hp = parser.parse_args()
@@ -72,7 +73,8 @@ if __name__=="__main__":
     train_dataset = DittoDataset(trainset, vocab, task,
                                    lm=hp.lm,
                                    max_len=hp.max_len,
-                                   size=hp.size)
+                                   size=hp.size,
+                                   balance=hp.balance)
     valid_dataset = DittoDataset(validset, vocab, task, lm=hp.lm)
     test_dataset = DittoDataset(testset, vocab, task, lm=hp.lm)
 
@@ -90,7 +92,8 @@ if __name__=="__main__":
                                       lm=hp.lm,
                                       max_len=hp.max_len,
                                       augment_op=hp.da,
-                                      size=hp.size)
+                                      size=hp.size,
+                                      balance=hp.balance)
         initialize_and_train(config,
                              train_dataset,
                              augment_dataset,
