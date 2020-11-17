@@ -129,6 +129,15 @@ def predict(input_path, output_path, config, model,
                 'match_confidence': score[int(pred)]}
             writer.write(output)
 
+    # input_path can also be train/valid/test.txt
+    # convert to jsonlines
+    if '.txt' in input_path:
+        with jsonlines.open(input_path + '.jsonl', mode='w') as writer:
+            for line in open(input_path):
+                writer.write(line.split('\t')[:2])
+        input_path += '.jsonl'
+
+    # batch processing
     start_time = time.time()
     with jsonlines.open(input_path) as reader,\
          jsonlines.open(output_path, mode='w') as writer:

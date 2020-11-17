@@ -75,6 +75,10 @@ class DittoDataset(SnippextDataset):
         sents, labels = [], []
         for line in open(path):
             items = line.strip().split('\t')
+
+            # assert length
+            assert len(items) <= 3, "Found examples with >3 tab-separated items"
+
             # only consider sentence and sentence pairs
             if len(items) < 2 or len(items) > 3:
                 continue
