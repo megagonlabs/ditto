@@ -8,6 +8,8 @@ from tqdm import tqdm
 from scipy.special import softmax
 
 sys.path.insert(0, "Snippext_public")
+sys.path.insert(0, ".")
+
 from copy import copy
 from ditto.dataset import DittoDataset
 from ditto.summarize import Summarizer
