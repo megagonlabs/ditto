@@ -3,6 +3,8 @@ import jsonlines
 import argparse
 import sys
 import numpy as np
+import random
+import torch
 
 from tqdm import tqdm
 from scipy.special import softmax
@@ -16,6 +18,15 @@ from ditto.summarize import Summarizer
 from ditto.knowledge import *
 from matcher import to_str, classify, load_model
 from sklearn.feature_extraction.text import TfidfVectorizer
+
+def set_seed(seed: int):
+    """
+    Helper function for reproducible behavior to set the seed in ``random``, ``numpy``, ``torch``
+    """
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
 
 def basic_blocking(records):
     """Basic blocking with TF-IDF
@@ -263,6 +274,7 @@ model = None
 @app.route('/query', methods=['POST'])
 def query():
     query_request = request.json
+    set_seed(123)
 
     # load variables
     query_type = query_request['query_type']
@@ -304,10 +316,11 @@ def query():
                          max_len=max_len,
                          lm=lm,
                          dk_injector=dk_injector)
+        result = []
         for cc in components:
             rec = records[cc[0]]
             rec['cluster_id'] = cc[1]
-        result = records
+            result.append(rec)
     elif query_type in ['predict', 'attr_score']:
         left = query_request['left']
         right = query_request['right']
@@ -336,6 +349,9 @@ if __name__ == "__main__":
     parser.add_argument("--summarize", dest="summarize", action="store_true")
     parser.add_argument("--max_len", type=int, default=256)
     hp = parser.parse_args()
+
+    # set seed
+    set_seed(123)
 
     # load the models
     config, model = load_model(hp.task, hp.checkpoint_path,

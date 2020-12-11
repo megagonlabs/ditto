@@ -190,6 +190,9 @@ def load_model(task, path, lm, use_gpu, fp16=True):
     if fp16 and 'cuda' in device:
         model = amp.initialize(model, opt_level='O2')
 
+    # switch to eval mode
+    model.eval()
+
     return config, model
 
 
