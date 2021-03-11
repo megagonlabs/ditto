@@ -19,6 +19,7 @@ from scipy.special import softmax
 
 sys.path.insert(0, "Snippext_public")
 from snippext.model import MultiTaskNet
+from snippext.train_util import eval_classifier
 from ditto.exceptions import ModelNotFoundError
 from ditto.dataset import DittoDataset
 from ditto.summarize import Summarizer
@@ -51,7 +52,10 @@ def to_str(row, summarizer=None, max_len=256, dk_injector=None):
 
     return content
 
-def classify(sentence_pairs, config, model, lm='distilbert', max_len=256):
+def classify(sentence_pairs, config, model,
+             lm='distilbert',
+             max_len=256,
+             threshold=None):
     """Apply the MRPC model.
 
     Args:
@@ -59,15 +63,17 @@ def classify(sentence_pairs, config, model, lm='distilbert', max_len=256):
         config (dict): the model configuration
         model (MultiTaskNet): the model in pytorch
         max_len (int, optional): the max sequence length
+        threshold (float, optional): the threshold of the 0's class
 
     Returns:
         list of float: the scores of the pairs
     """
     inputs = []
     for (sentA, sentB) in sentence_pairs:
-        inputs.append(sentA + '\t' + sentB)
+        inputs.append(sentA + ' [SEP] ' + sentB)
 
     dataset = DittoDataset(inputs, config['vocab'], config['name'], lm=lm, max_len=max_len)
+    # print(dataset[0])
     iterator = data.DataLoader(dataset=dataset,
                                  batch_size=64,
                                  shuffle=False,
@@ -77,6 +83,7 @@ def classify(sentence_pairs, config, model, lm='distilbert', max_len=256):
     # prediction
     Y_logits = []
     Y_hat = []
+    Y_prob = []
     with torch.no_grad():
         # print('Classification')
         for i, batch in enumerate(iterator):
@@ -85,6 +92,12 @@ def classify(sentence_pairs, config, model, lm='distilbert', max_len=256):
             logits, _, y_hat = model(x, y, task=taskname)  # y_hat: (N, T)
             Y_logits += logits.cpu().numpy().tolist()
             Y_hat.extend(y_hat.cpu().numpy().tolist())
+            Y_prob.extend(logits.softmax(dim=-1).max(dim=-1)[0].cpu().numpy().tolist())
+
+    # adjust Y_hat if threshold is provided
+    # print(threshold)
+    if threshold is not None:
+        Y_hat = [y if p > threshold else 0 for (y, p) in zip(Y_hat, Y_prob)]
 
     results = []
     for i in range(len(inputs)):
@@ -98,7 +111,8 @@ def predict(input_path, output_path, config, model,
             summarizer=None,
             lm='distilbert',
             max_len=256,
-            dk_injector=None):
+            dk_injector=None,
+            threshold=None):
     """Run the model over the input file containing the candidate entry pairs
 
     Args:
@@ -110,6 +124,7 @@ def predict(input_path, output_path, config, model,
         summarizer (Summarizer, optional): the summarization module
         max_len (int, optional): the max sequence length
         dk_injector (DKInjector, optional): the domain-knowledge injector
+        threshold (float, optional): the threshold of the 0's class
 
     Returns:
         None
@@ -118,7 +133,9 @@ def predict(input_path, output_path, config, model,
 
     def process_batch(rows, pairs, writer):
         try:
-            predictions, logits = classify(pairs, config, model, lm=lm, max_len=max_len)
+            predictions, logits = classify(pairs, config, model, lm=lm,
+                                           max_len=max_len,
+                                           threshold=threshold)
         except:
             # ignore the whole batch
             return
@@ -129,6 +146,15 @@ def predict(input_path, output_path, config, model,
                 'match_confidence': score[int(pred)]}
             writer.write(output)
 
+    # input_path can also be train/valid/test.txt
+    # convert to jsonlines
+    if '.txt' in input_path:
+        with jsonlines.open(input_path + '.jsonl', mode='w') as writer:
+            for line in open(input_path):
+                writer.write(line.split('\t')[:2])
+        input_path += '.jsonl'
+
+    # batch processing
     start_time = time.time()
     with jsonlines.open(input_path) as reader,\
          jsonlines.open(output_path, mode='w') as writer:
@@ -149,6 +175,44 @@ def predict(input_path, output_path, config, model,
     run_time = time.time() - start_time
     run_tag = '%s_lm=%s_dk=%s_su=%s' % (config['name'], lm, str(dk_injector != None), str(summarizer != None))
     os.system('echo %s %f >> log.txt' % (run_tag, run_time))
+
+
+def tune_threshold(config, model, hp):
+    """Tune the prediction threshold for a given model on a validation set"""
+    validset = config['validset']
+    task = hp.task
+
+    # summarize the sequences up to the max sequence length
+    if hp.summarize:
+        summarizer = Summarizer(config, lm=hp.lm)
+        validset = summarizer.transform_file(validset, max_len=hp.max_len)
+
+    if hp.dk is not None:
+        if hp.dk == 'product':
+            injector = ProductDKInjector(config, hp.dk)
+        else:
+            injector = GeneralDKInjector(config, hp.dk)
+
+        validset = injector.transform_file(validset)
+
+    # load dev sets
+    valid_dataset = DittoDataset(validset,
+                                 config['vocab'],
+                                 task,
+                                 lm=hp.lm)
+    # print(valid_dataset[0])
+
+    valid_iter = data.DataLoader(dataset=valid_dataset,
+                                 batch_size=64,
+                                 shuffle=False,
+                                 num_workers=0,
+                                 collate_fn=DittoDataset.pad)
+
+    acc, prec, recall, f1, v_loss, th = eval_classifier(model, valid_iter,
+                                                        get_threshold=True)
+    # print(th)
+    return th
+
 
 def load_model(task, path, lm, use_gpu, fp16=True):
     """Load a model for a specific task.
@@ -183,15 +247,10 @@ def load_model(task, path, lm, use_gpu, fp16=True):
 
     saved_state = torch.load(checkpoint, map_location=lambda storage, loc: storage)
     model.load_state_dict(saved_state)
-
-
     model = model.to(device)
 
     if fp16 and 'cuda' in device:
         model = amp.initialize(model, opt_level='O2')
-
-    # switch to eval mode
-    model.eval()
 
     return config, model
 
@@ -224,9 +283,14 @@ if __name__ == "__main__":
         else:
             dk_injector = GeneralDKInjector(config, hp.dk)
 
+    # tune threshold
+    threshold = tune_threshold(config, model, hp)
+
     # run prediction
     predict(hp.input_path, hp.output_path, config, model,
             summarizer=summarizer,
             max_len=hp.max_len,
             lm=hp.lm,
-            dk_injector=dk_injector)
+            dk_injector=dk_injector,
+            threshold=threshold)
+
