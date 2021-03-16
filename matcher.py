@@ -10,6 +10,7 @@ import re
 import time
 import argparse
 import sys
+import sklearn
 import traceback
 
 from torch.utils import data
@@ -25,11 +26,23 @@ from ditto.dataset import DittoDataset
 from ditto.summarize import Summarizer
 from ditto.knowledge import *
 
-def to_str(row, summarizer=None, max_len=256, dk_injector=None):
-    """Serialize a data entry
+
+def set_seed(seed: int):
+    """
+    Helper function for reproducible behavior to set the seed in ``random``, ``numpy``, ``torch``
+    """
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+
+
+def to_str(ent1, ent2, summarizer=None, max_len=256, dk_injector=None):
+    """Serialize a pair of data entries
 
     Args:
-        row (Dictionary): the data entry
+        ent1 (Dictionary): the 1st data entry
+        ent2 (Dictionary): the 2nd data entry
         summarizer (Summarizer, optional): the summarization module
         max_len (int, optional): the max sequence length
         dk_injector (DKInjector, optional): the domain-knowledge injector
@@ -37,20 +50,26 @@ def to_str(row, summarizer=None, max_len=256, dk_injector=None):
     Returns:
         string: the serialized version
     """
-    # if the entry is already serialized
-    if isinstance(row, str):
-        return row
     content = ''
-    for attr in row.keys():
-        content += 'COL %s VAL %s ' % (attr, row[attr])
+    for ent in [ent1, ent2]:
+        if isinstance(ent, str):
+            content += ent
+        else:
+            for attr in ent.keys():
+                content += 'COL %s VAL %s ' % (attr, ent[attr])
+        content += '\t'
+
+    content += '0'
 
     if summarizer is not None:
         content = summarizer.transform(content, max_len=max_len)
 
+    new_ent1, new_ent2, _ = content.split('\t')
     if dk_injector is not None:
-        content = dk_injector.transform(content)
+        new_ent1 = dk_injector.transform(new_ent1)
+        new_ent2 = dk_injector.transform(new_ent2)
 
-    return content
+    return new_ent1 + ' [SEP] ' + new_ent2
 
 def classify(sentence_pairs, config, model,
              lm='distilbert',
@@ -59,7 +78,7 @@ def classify(sentence_pairs, config, model,
     """Apply the MRPC model.
 
     Args:
-        sentence_pairs (list of tuples of str): the sentence pairs
+        sentence_pairs (list of str): the sequence pairs
         config (dict): the model configuration
         model (MultiTaskNet): the model in pytorch
         max_len (int, optional): the max sequence length
@@ -68,11 +87,10 @@ def classify(sentence_pairs, config, model,
     Returns:
         list of float: the scores of the pairs
     """
-    inputs = []
-    for (sentA, sentB) in sentence_pairs:
-        inputs.append(sentA + ' [SEP] ' + sentB)
-
-    dataset = DittoDataset(inputs, config['vocab'], config['name'], lm=lm, max_len=max_len)
+    inputs = sentence_pairs
+    # print('max_len =', max_len)
+    dataset = DittoDataset(inputs, config['vocab'], config['name'],
+                           lm=lm)
     # print(dataset[0])
     iterator = data.DataLoader(dataset=dataset,
                                  batch_size=64,
@@ -161,8 +179,7 @@ def predict(input_path, output_path, config, model,
         pairs = []
         rows = []
         for idx, row in tqdm(enumerate(reader)):
-            pairs.append((to_str(row[0], summarizer, max_len, dk_injector),
-                          to_str(row[1], summarizer, max_len, dk_injector)))
+            pairs.append(to_str(row[0], row[1], summarizer, max_len, dk_injector))
             rows.append(row)
             if len(pairs) == batch_size:
                 process_batch(rows, pairs, writer)
@@ -183,9 +200,11 @@ def tune_threshold(config, model, hp):
     task = hp.task
 
     # summarize the sequences up to the max sequence length
+    set_seed(123)
+    summarizer = injector = None
     if hp.summarize:
         summarizer = Summarizer(config, lm=hp.lm)
-        validset = summarizer.transform_file(validset, max_len=hp.max_len)
+        validset = summarizer.transform_file(validset, max_len=hp.max_len, overwrite=True)
 
     if hp.dk is not None:
         if hp.dk == 'product':
@@ -200,7 +219,8 @@ def tune_threshold(config, model, hp):
                                  config['vocab'],
                                  task,
                                  lm=hp.lm)
-    # print(valid_dataset[0])
+
+    print(valid_dataset[0])
 
     valid_iter = data.DataLoader(dataset=valid_dataset,
                                  batch_size=64,
@@ -211,7 +231,32 @@ def tune_threshold(config, model, hp):
     acc, prec, recall, f1, v_loss, th = eval_classifier(model, valid_iter,
                                                         get_threshold=True)
     # print(th)
+    # verify F1
+    set_seed(123)
+    predict(validset, "tmp.jsonl", config, model,
+            summarizer=summarizer,
+            max_len=hp.max_len,
+            lm=hp.lm,
+            dk_injector=injector,
+            threshold=th)
+
+    predicts = []
+    with jsonlines.open("tmp.jsonl", mode="r") as reader:
+        for line in reader:
+            predicts.append(int(line['match']))
+    os.system("rm tmp.jsonl")
+
+    labels = []
+    with open(validset) as fin:
+        for line in fin:
+            labels.append(int(line.split('\t')[-1]))
+
+    real_f1 = sklearn.metrics.f1_score(labels, predicts)
+    print("load_f1 =", f1)
+    print("real_f1 =", real_f1)
+
     return th
+
 
 
 def load_model(task, path, lm, use_gpu, fp16=True):
@@ -270,6 +315,7 @@ if __name__ == "__main__":
     hp = parser.parse_args()
 
     # load the models
+    set_seed(123)
     config, model = load_model(hp.task, hp.checkpoint_path,
                                hp.lm, hp.use_gpu, hp.fp16)
 
