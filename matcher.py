@@ -90,6 +90,7 @@ def classify(sentence_pairs, config, model,
     inputs = sentence_pairs
     # print('max_len =', max_len)
     dataset = DittoDataset(inputs, config['vocab'], config['name'],
+                           max_len=max_len,
                            lm=lm)
     # print(dataset[0])
     iterator = data.DataLoader(dataset=dataset,
@@ -218,9 +219,10 @@ def tune_threshold(config, model, hp):
     valid_dataset = DittoDataset(validset,
                                  config['vocab'],
                                  task,
+                                 max_len=hp.max_len,
                                  lm=hp.lm)
 
-    print(valid_dataset[0])
+    # print(valid_dataset[0])
 
     valid_iter = data.DataLoader(dataset=valid_dataset,
                                  batch_size=64,
