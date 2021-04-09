@@ -47,7 +47,9 @@ class Summarizer:
                         for entry in LL:
                             content.append(entry)
 
-        vectorizer = TfidfVectorizer().fit(content)
+        vectorizer = TfidfVectorizer(lowercase=False,
+                                     tokenizer=lambda x: x.split(' '))\
+                                             .fit(content)
         self.vocab = vectorizer.vocabulary_
         self.idf = vectorizer.idf_
 
@@ -77,11 +79,18 @@ class Summarizer:
         cnt = Counter()
         for sent in [sentA, sentB]:
             tokens = sent.split(' ')
+            # print('all_tokens:', tokens)
+            oov = []
+
             for token in tokens:
                 if token not in ['COL', 'VAL'] and \
                    token not in stopwords:
                     if token in self.vocab:
                         cnt[token] += self.idf[self.vocab[token]]
+                    else:
+                        oov.append(token)
+            # print('oov:', oov)
+            # print(self.vocab)
 
         for sent in [sentA, sentB]:
             token_cnt = Counter(sent.split(' '))
