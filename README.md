@@ -1,5 +1,7 @@
 # Ditto: Deep Entity Matching with Pre-Trained Language Models
 
+*Update: a new light-weight version based on new versions of Transformers*
+
 Ditto is an entity matching (EM) solution based on pre-trained language models such as BERT. Given a pair of data entries, EM checks if the two entries refer to the same real-world entities (products, businesses, publications, persons, etc.). Ditto leverages the powerful language understanding capability of pre-trained language models (LMs) via fine-tuning. Ditto serializes each data entry into a text sequence and casts EM as a sequence-pair classification problem solvable by LM fine-tuning. We also employ a set of novel optimizations including summarization, injecting domain-specific knowledge, and data augmentation to further boost the performance of the matching models.
 
 For more technical details, see the [Deep Entity Matching with Pre-Trained Language Models](https://arxiv.org/abs/2004.00584) paper.
@@ -47,7 +49,6 @@ CUDA_VISIBLE_DEVICES=0 python train_ditto.py \
   --max_len 64 \
   --lr 3e-5 \
   --n_epochs 40 \
-  --finetuning \
   --lm distilbert \
   --fp16 \
   --da del \
@@ -57,7 +58,6 @@ CUDA_VISIBLE_DEVICES=0 python train_ditto.py \
 The meaning of the flags:
 * ``--task``: the name of the tasks (see ``configs.json``)
 * ``--batch_size``, ``--max_len``, ``--lr``, ``--n_epochs``: the batch size, max sequence length, learning rate, and the number of epochs
-* ``--finetuning``: whether to finetune the LM, should always be turned on
 * ``--lm``: the language model. We now support ``bert``, ``distilbert``, and ``albert`` (``distilbert`` by default).
 * ``--fp16``: whether train with the half-precision floating point optimization
 * ``--da``, ``--dk``, ``--summarize``: the 3 optimizations of Ditto. See the followings for details.

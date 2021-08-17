@@ -5,9 +5,10 @@ import sys
 
 sys.path.insert(0, "Snippext_public")
 
-from ditto.dataset import DittoDataset
-from ditto.summarize import Summarizer
-from ditto.knowledge import *
+from ditto_light.dataset import DittoDataset
+from ditto_light.summarize import Summarizer
+from ditto_light.knowledge import *
+from ditto_light.ditto import train
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
@@ -48,9 +49,6 @@ if __name__=="__main__":
     trainset = config['trainset']
     validset = config['validset']
     testset = config['testset']
-    task_type = config['task_type']
-    vocab = config['vocab']
-    tasknames = [task]
 
     # summarize the sequences up to the max sequence length
     if hp.summarize:
@@ -70,34 +68,16 @@ if __name__=="__main__":
         testset = injector.transform_file(testset)
 
     # load train/dev/test sets
-    train_dataset = DittoDataset(trainset, vocab, task,
+    train_dataset = DittoDataset(trainset,
                                    lm=hp.lm,
                                    max_len=hp.max_len,
                                    size=hp.size,
-                                   balance=hp.balance)
-    valid_dataset = DittoDataset(validset, vocab, task, lm=hp.lm)
-    test_dataset = DittoDataset(testset, vocab, task, lm=hp.lm)
+                                   da=hp.da)
+    valid_dataset = DittoDataset(validset, lm=hp.lm)
+    test_dataset = DittoDataset(testset, lm=hp.lm)
 
-    if hp.da is None:
-        from snippext.baseline import initialize_and_train
-        initialize_and_train(config,
-                             train_dataset,
-                             valid_dataset,
-                             test_dataset,
-                             hp,
-                             run_tag)
-    else:
-        from snippext.mixda import initialize_and_train
-        augment_dataset = DittoDataset(trainset, vocab, task,
-                                      lm=hp.lm,
-                                      max_len=hp.max_len,
-                                      augment_op=hp.da,
-                                      size=hp.size,
-                                      balance=hp.balance)
-        initialize_and_train(config,
-                             train_dataset,
-                             augment_dataset,
-                             valid_dataset,
-                             test_dataset,
-                             hp,
-                             run_tag)
+    # train and evaluate the model
+    train(train_dataset,
+          valid_dataset,
+          test_dataset,
+          run_tag, hp)
