@@ -75,8 +75,12 @@ if __name__=="__main__":
                                    max_len=hp.max_len,
                                    size=hp.size,
                                    balance=hp.balance)
-    valid_dataset = DittoDataset(validset, vocab, task, lm=hp.lm)
-    test_dataset = DittoDataset(testset, vocab, task, lm=hp.lm)
+    valid_dataset = DittoDataset(validset, vocab, task,
+                                 lm=hp.lm,
+                                 max_len=hp.max_len)
+    test_dataset = DittoDataset(testset, vocab, task,
+                                lm=hp.lm,
+                                max_len=hp.max_len)
 
     if hp.da is None:
         from snippext.baseline import initialize_and_train
