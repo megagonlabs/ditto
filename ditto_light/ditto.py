@@ -47,7 +47,7 @@ class DittoModel(nn.Module):
             Tensor: binary prediction
         """
         x1 = x1.to(self.device) # (batch_size, seq_len)
-        if x2:
+        if x2 is not None:
             # MixDA
             x2 = x2.to(self.device) # (batch_size, seq_len)
             enc = self.bert(torch.cat((x1, x2)))[0][:, 0, :]
@@ -55,7 +55,7 @@ class DittoModel(nn.Module):
             enc1 = enc[:batch_size] # (batch_size, emb_size)
             enc2 = enc[batch_size:] # (batch_size, emb_size)
 
-            aug_lam = np.random.beta(alpha_aug, alpha_aug)
+            aug_lam = np.random.beta(self.alpha_aug, self.alpha_aug)
             enc = enc1 * aug_lam + enc2 * (1.0 - aug_lam)
         else:
             enc = self.bert(x1)[0][:, 0, :]

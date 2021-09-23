@@ -8,9 +8,9 @@ For more technical details, see the [Deep Entity Matching with Pre-Trained Langu
 
 ## Requirements
 
-* Python 3.7.5
-* PyTorch 1.4
-* HuggingFace Transformers 
+* Python 3.7.7
+* PyTorch 1.9
+* HuggingFace Transformers 4.9.2
 * Spacy with the ``en_core_web_lg`` models
 * NVIDIA Apex (fp16 training)
 
