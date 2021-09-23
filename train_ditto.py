@@ -2,6 +2,9 @@ import os
 import argparse
 import json
 import sys
+import torch
+import numpy as np
+import random
 
 sys.path.insert(0, "Snippext_public")
 
@@ -22,16 +25,22 @@ if __name__=="__main__":
     parser.add_argument("--save_model", dest="save_model", action="store_true")
     parser.add_argument("--logdir", type=str, default="checkpoints/")
     parser.add_argument("--lm", type=str, default='distilbert')
-    parser.add_argument("--bert_path", type=str, default=None)
     parser.add_argument("--fp16", dest="fp16", action="store_true")
     parser.add_argument("--da", type=str, default=None)
     parser.add_argument("--alpha_aug", type=float, default=0.8)
     parser.add_argument("--dk", type=str, default=None)
     parser.add_argument("--summarize", dest="summarize", action="store_true")
-    parser.add_argument("--balance", dest="balance", action="store_true")
     parser.add_argument("--size", type=int, default=None)
 
     hp = parser.parse_args()
+
+    # set seeds
+    seed = hp.run_id
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
 
     # only a single task for baseline
     task = hp.task

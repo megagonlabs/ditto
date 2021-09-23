@@ -1,6 +1,3 @@
-[submodule "Snippext_public"]
-	path = Snippext_public
-	url = https://github.com/rit-git/Snippext_public
 [submodule "blocking/sentence-transformers"]
 	path = blocking/sentence-transformers
 	url = https://github.com/UKPLab/sentence-transformers

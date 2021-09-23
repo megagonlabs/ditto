@@ -9,6 +9,13 @@ from .augment import Augmenter
 lm_mp = {'roberta': 'roberta-base',
          'distilbert': 'distilbert-base-uncased'}
 
+def get_tokenizer(lm):
+    if lm in lm_mp:
+        return AutoTokenizer.from_pretrained(lm_mp[lm])
+    else:
+        return AutoTokenizer.from_pretrained(lm)
+
+
 class DittoDataset(data.Dataset):
     """EM dataset"""
 
@@ -18,17 +25,18 @@ class DittoDataset(data.Dataset):
                  size=None,
                  lm='roberta',
                  da=None):
-        if lm in lm_mp:
-            self.tokenizer = AutoTokenizer.from_pretrained(lm_mp[lm])
-        else:
-            self.tokenizer = AutoTokenizer.from_pretrained(lm)
-
+        self.tokenizer = get_tokenizer(lm)
         self.pairs = []
         self.labels = []
         self.max_len = max_len
         self.size = size
 
-        for line in open(path):
+        if isinstance(path, list):
+            lines = path
+        else:
+            lines = open(path)
+
+        for line in lines:
             s1, s2, label = line.strip().split('\t')
             self.pairs.append((s1, s2))
             self.labels.append(int(label))

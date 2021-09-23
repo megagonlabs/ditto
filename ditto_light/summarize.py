@@ -7,7 +7,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from collections import Counter
 from nltk.corpus import stopwords
 
-from snippext.dataset import get_tokenizer
+from .dataset import get_tokenizer
 
 stopwords = set(stopwords.words('english'))
 

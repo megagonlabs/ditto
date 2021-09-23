@@ -208,6 +208,20 @@ def train(trainset, validset, testset, run_tag, hp):
         if dev_f1 > best_dev_f1:
             best_dev_f1 = dev_f1
             best_test_f1 = test_f1
+            if hp.save_model:
+                # create the directory if not exist
+                directory = os.path.join(hp.logdir, hp.task)
+                if not os.path.exists(directory):
+                    os.makedirs(directory)
+
+                # save the checkpoints for each component
+                ckpt_path = os.path.join(hp.logdir, hp.task, 'model.pt')
+                ckpt = {'model': model.state_dict(),
+                        'optimizer': optimizer.state_dict(),
+                        'scheduler': scheduler.state_dict(),
+                        'epoch': epoch}
+                torch.save(ckpt, ckpt_path)
+
         print(f"epoch {epoch}: dev_f1={dev_f1}, f1={test_f1}, best_f1={best_test_f1}")
 
         # logging
