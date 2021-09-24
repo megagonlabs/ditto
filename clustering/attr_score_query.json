@@ -1,0 +1,10 @@
+{
+    "query_type": "predict",
+    "left": {"name": "panasonic black 8.5 ' portable dvd player dvdls83", "description": "panasonic black 8.5 ' portable dvd player dvdls83 8.5 ' free style wide screen lcd display 6 hour battery multi format playback dual headphone jacks divx playback car dc adapter included black finish", "price": "", "cluster_id": 0},
+    "right": {"name": "panasonic dvd-ls83 portable dvd player", "description": "8.5 ' lcd dvd + rw , dvd-rw , dvd-ram , dvd + r , dvd-r , cd-rw dvd video , cd-da , mp3 , jpeg , mpeg-4 , divx , wma , video cd , svcd , highmat playback", "price": "148.69", "cluster_id": 0},
+    "task": "Textual/Abt-Buy",
+    "use_gpu": "TRUE",
+    "fp16": "TRUE",
+    "max_len": 256,
+    "lm": "roberta"
+}
