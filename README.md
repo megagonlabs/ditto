@@ -1,14 +1,16 @@
 # Ditto: Deep Entity Matching with Pre-Trained Language Models
 
+*Update: a new light-weight version based on new versions of Transformers*
+
 Ditto is an entity matching (EM) solution based on pre-trained language models such as BERT. Given a pair of data entries, EM checks if the two entries refer to the same real-world entities (products, businesses, publications, persons, etc.). Ditto leverages the powerful language understanding capability of pre-trained language models (LMs) via fine-tuning. Ditto serializes each data entry into a text sequence and casts EM as a sequence-pair classification problem solvable by LM fine-tuning. We also employ a set of novel optimizations including summarization, injecting domain-specific knowledge, and data augmentation to further boost the performance of the matching models.
 
 For more technical details, see the [Deep Entity Matching with Pre-Trained Language Models](https://arxiv.org/abs/2004.00584) paper.
 
 ## Requirements
 
-* Python 3.7.5
-* PyTorch 1.4
-* HuggingFace Transformers 
+* Python 3.7.7
+* PyTorch 1.9
+* HuggingFace Transformers 4.9.2
 * Spacy with the ``en_core_web_lg`` models
 * NVIDIA Apex (fp16 training)
 
@@ -47,7 +49,6 @@ CUDA_VISIBLE_DEVICES=0 python train_ditto.py \
   --max_len 64 \
   --lr 3e-5 \
   --n_epochs 40 \
-  --finetuning \
   --lm distilbert \
   --fp16 \
   --da del \
@@ -57,10 +58,10 @@ CUDA_VISIBLE_DEVICES=0 python train_ditto.py \
 The meaning of the flags:
 * ``--task``: the name of the tasks (see ``configs.json``)
 * ``--batch_size``, ``--max_len``, ``--lr``, ``--n_epochs``: the batch size, max sequence length, learning rate, and the number of epochs
-* ``--finetuning``: whether to finetune the LM, should always be turned on
 * ``--lm``: the language model. We now support ``bert``, ``distilbert``, and ``albert`` (``distilbert`` by default).
 * ``--fp16``: whether train with the half-precision floating point optimization
 * ``--da``, ``--dk``, ``--summarize``: the 3 optimizations of Ditto. See the followings for details.
+* ``--save_model``: if this flag is on, then save the checkpoint to ``{logdir}/{task}/model.pt``.
 
 ### Data augmentation (DA)
 
@@ -93,8 +94,13 @@ CUDA_VISIBLE_DEVICES=0 python matcher.py \
   --input_path input/input_small.jsonl \
   --output_path output/output_small.jsonl \
   --lm distilbert \
+  --max_len 64 \
   --use_gpu \
   --fp16 \
   --checkpoint_path checkpoints/
 ```
-where ``--task`` is the task name, ``--input_path`` is the input file of the candidate pairs in the jsonlines format, ``--output_path`` is the output path, and ``checkpoint_path`` is the path to the model checkpoint. The checkpoint needs to be named ``TASK_NAME.pt`` where ``TASK_NAME`` is the name of the task and the language model ``--lm`` should be set to the same as the one used in training. The same ``--dk`` and ``--summarize`` flags also need to be specified if they are used at the training time.
+where ``--task`` is the task name, ``--input_path`` is the input file of the candidate pairs in the jsonlines format, ``--output_path`` is the output path, and ``checkpoint_path`` is the path to the model checkpoint (same as ``--logdir`` when training). The language model ``--lm`` and ``--max_len`` should be set to the same as the one used in training. The same ``--dk`` and ``--summarize`` flags also need to be specified if they are used at the training time.
+
+## Colab notebook
+
+You can also run training and prediction using this colab [notebook](https://colab.research.google.com/drive/1eyQbockBSxxQ_tuW5F1XKyeVOM1HT_Ro?usp=sharing).

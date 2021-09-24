@@ -2,12 +2,16 @@ import os
 import argparse
 import json
 import sys
+import torch
+import numpy as np
+import random
 
 sys.path.insert(0, "Snippext_public")
 
-from ditto.dataset import DittoDataset
-from ditto.summarize import Summarizer
-from ditto.knowledge import *
+from ditto_light.dataset import DittoDataset
+from ditto_light.summarize import Summarizer
+from ditto_light.knowledge import *
+from ditto_light.ditto import train
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
@@ -21,16 +25,22 @@ if __name__=="__main__":
     parser.add_argument("--save_model", dest="save_model", action="store_true")
     parser.add_argument("--logdir", type=str, default="checkpoints/")
     parser.add_argument("--lm", type=str, default='distilbert')
-    parser.add_argument("--bert_path", type=str, default=None)
     parser.add_argument("--fp16", dest="fp16", action="store_true")
     parser.add_argument("--da", type=str, default=None)
     parser.add_argument("--alpha_aug", type=float, default=0.8)
     parser.add_argument("--dk", type=str, default=None)
     parser.add_argument("--summarize", dest="summarize", action="store_true")
-    parser.add_argument("--balance", dest="balance", action="store_true")
     parser.add_argument("--size", type=int, default=None)
 
     hp = parser.parse_args()
+
+    # set seeds
+    seed = hp.run_id
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
 
     # only a single task for baseline
     task = hp.task
@@ -48,9 +58,6 @@ if __name__=="__main__":
     trainset = config['trainset']
     validset = config['validset']
     testset = config['testset']
-    task_type = config['task_type']
-    vocab = config['vocab']
-    tasknames = [task]
 
     # summarize the sequences up to the max sequence length
     if hp.summarize:
@@ -70,34 +77,16 @@ if __name__=="__main__":
         testset = injector.transform_file(testset)
 
     # load train/dev/test sets
-    train_dataset = DittoDataset(trainset, vocab, task,
+    train_dataset = DittoDataset(trainset,
                                    lm=hp.lm,
                                    max_len=hp.max_len,
                                    size=hp.size,
-                                   balance=hp.balance)
-    valid_dataset = DittoDataset(validset, vocab, task, lm=hp.lm)
-    test_dataset = DittoDataset(testset, vocab, task, lm=hp.lm)
+                                   da=hp.da)
+    valid_dataset = DittoDataset(validset, lm=hp.lm)
+    test_dataset = DittoDataset(testset, lm=hp.lm)
 
-    if hp.da is None:
-        from snippext.baseline import initialize_and_train
-        initialize_and_train(config,
-                             train_dataset,
-                             valid_dataset,
-                             test_dataset,
-                             hp,
-                             run_tag)
-    else:
-        from snippext.mixda import initialize_and_train
-        augment_dataset = DittoDataset(trainset, vocab, task,
-                                      lm=hp.lm,
-                                      max_len=hp.max_len,
-                                      augment_op=hp.da,
-                                      size=hp.size,
-                                      balance=hp.balance)
-        initialize_and_train(config,
-                             train_dataset,
-                             augment_dataset,
-                             valid_dataset,
-                             test_dataset,
-                             hp,
-                             run_tag)
+    # train and evaluate the model
+    train(train_dataset,
+          valid_dataset,
+          test_dataset,
+          run_tag, hp)
