@@ -4,7 +4,7 @@ import sys
 import os
 
 from sklearn.feature_extraction.text import TfidfVectorizer
-from collections import Counter
+from collections import Counter, OrderedDict
 from nltk.corpus import stopwords
 
 from .dataset import get_tokenizer
@@ -60,7 +60,7 @@ class Summarizer:
         self.len_cache[word] = length
         return length
 
-    def transform(self, row, max_len=128):
+    def transform(self, row, numeric_col_names = None, max_len=128, extract_numeric = False):
         """Summarize one single example.
 
         Only retain tokens of the highest tf-idf
@@ -75,6 +75,13 @@ class Summarizer:
         sentA, sentB, label = row.strip().split('\t')
         res = ''
         cnt = Counter()
+        
+        numeric_val_A = ""
+        numeric_val_B = ""
+        if extract_numeric:
+            numeric_val_A, sentA = self.separate_numeric_values(sentA, numeric_col_names)
+            numeric_val_B, sentB = self.separate_numeric_values(sentB, numeric_col_names)
+        
         for sent in [sentA, sentB]:
             tokens = sent.split(' ')
             for token in tokens:
@@ -107,13 +114,46 @@ class Summarizer:
                 elif token in topk_tokens_copy:
                     res += token + ' '
                     topk_tokens_copy.remove(token)
-
             res += '\t'
+        
+        if extract_numeric:
+            res += numeric_val_A + '\t'+ numeric_val_B + '\t'
 
         res += label + '\n'
         return res
 
-    def transform_file(self, input_fn, max_len=256, overwrite=False):
+    def separate_numeric_values(self, sentence, numeric_col_names = None):
+        """return dictionary of the numeric values
+        """
+        if numeric_col_names == None:
+            return None, sentence
+        
+        numeric = {}
+        text = ''
+        for col in sentence.split('COL '):
+            if len(col) > 0:
+                header = col.split(' VAL')[0]
+                if header in numeric_col_names:
+                    value = col.split('VAL')[1].replace(' ','').replace('/','').replace('-','').replace('$','')
+                    if '%' in value:
+                        if value.replace('%','').replace('.','').isnumeric():
+                            numeric[header] = float(value.replace('%',''))/100
+                    elif value.replace('.','').isnumeric():
+                        numeric[header] = float(value)
+                    else:
+                        numeric[header] = 0
+                else:
+                    text += 'COL ' + col
+        
+        numeric_result = ""
+        for header in numeric_col_names:
+            if header in numeric.keys():
+                numeric_result += str(numeric[header]) + " "
+                
+        return numeric_result, text
+    
+    def transform_file(self, input_fn, numeric_col_names = None, max_len = 256,
+                       overwrite = True, is_num_ditto = False):
         """Summarize all lines of a tsv file.
 
         Run the summarizer. If the output already exists, just return the file name.
@@ -131,5 +171,8 @@ class Summarizer:
            os.stat(out_fn).st_size == 0 or overwrite:
             with open(out_fn, 'w') as fout:
                 for line in open(input_fn):
-                    fout.write(self.transform(line, max_len=max_len))
+                    fout.write(self.transform(line, 
+                                              max_len=max_len, 
+                                              numeric_col_names=numeric_col_names,
+                                              extract_numeric=is_num_ditto))
         return out_fn

@@ -165,7 +165,8 @@
   "vocab": ["0", "1"],
   "trainset": "data/er_magellan/Dirty/DBLP-ACM/train.txt",
   "validset": "data/er_magellan/Dirty/DBLP-ACM/valid.txt",
-  "testset": "data/er_magellan/Dirty/DBLP-ACM/test.txt"
+  "testset": "data/er_magellan/Dirty/DBLP-ACM/test.txt",
+  "number_feature_columns": ["year"]
   },
   {
   "name": "Dirty/DBLP-GoogleScholar",
@@ -173,7 +174,8 @@
   "vocab": ["0", "1"],
   "trainset": "data/er_magellan/Dirty/DBLP-GoogleScholar/train.txt",
   "validset": "data/er_magellan/Dirty/DBLP-GoogleScholar/valid.txt",
-  "testset": "data/er_magellan/Dirty/DBLP-GoogleScholar/test.txt"
+  "testset": "data/er_magellan/Dirty/DBLP-GoogleScholar/test.txt",
+  "number_feature_columns": ["year"]
   },
   {
   "name": "Dirty/iTunes-Amazon",
@@ -181,7 +183,8 @@
   "vocab": ["0", "1"],
   "trainset": "data/er_magellan/Dirty/iTunes-Amazon/train.txt",
   "validset": "data/er_magellan/Dirty/iTunes-Amazon/valid.txt",
-  "testset": "data/er_magellan/Dirty/iTunes-Amazon/test.txt"
+  "testset": "data/er_magellan/Dirty/iTunes-Amazon/test.txt",
+  "number_feature_columns": ["Price"]
   },
   {
   "name": "Dirty/Walmart-Amazon",
@@ -189,7 +192,8 @@
   "vocab": ["0", "1"],
   "trainset": "data/er_magellan/Dirty/Walmart-Amazon/train.txt",
   "validset": "data/er_magellan/Dirty/Walmart-Amazon/valid.txt",
-  "testset": "data/er_magellan/Dirty/Walmart-Amazon/test.txt"
+  "testset": "data/er_magellan/Dirty/Walmart-Amazon/test.txt",
+  "number_feature_columns": ["price"]
   },
   {
   "name": "Structured/Amazon-Google",
@@ -197,7 +201,8 @@
   "vocab": ["0", "1"],
   "trainset": "data/er_magellan/Structured/Amazon-Google/train.txt",
   "validset": "data/er_magellan/Structured/Amazon-Google/valid.txt",
-  "testset": "data/er_magellan/Structured/Amazon-Google/test.txt"
+  "testset": "data/er_magellan/Structured/Amazon-Google/test.txt",
+  "number_feature_columns": ["price"]
   },
   {
   "name": "Structured/Beer",
@@ -205,7 +210,8 @@
   "vocab": ["0", "1"],
   "trainset": "data/er_magellan/Structured/Beer/train.txt",
   "validset": "data/er_magellan/Structured/Beer/valid.txt",
-  "testset": "data/er_magellan/Structured/Beer/test.txt"
+  "testset": "data/er_magellan/Structured/Beer/test.txt",
+  "number_feature_columns": ["ABV"]
   },
   {
   "name": "Structured/DBLP-ACM",
@@ -213,7 +219,8 @@
   "vocab": ["0", "1"],
   "trainset": "data/er_magellan/Structured/DBLP-ACM/train.txt",
   "validset": "data/er_magellan/Structured/DBLP-ACM/valid.txt",
-  "testset": "data/er_magellan/Structured/DBLP-ACM/test.txt"
+  "testset": "data/er_magellan/Structured/DBLP-ACM/test.txt",
+  "number_feature_columns": ["year"]
   },
   {
   "name": "Structured/DBLP-GoogleScholar",
@@ -221,7 +228,8 @@
   "vocab": ["0", "1"],
   "trainset": "data/er_magellan/Structured/DBLP-GoogleScholar/train.txt",
   "validset": "data/er_magellan/Structured/DBLP-GoogleScholar/valid.txt",
-  "testset": "data/er_magellan/Structured/DBLP-GoogleScholar/test.txt"
+  "testset": "data/er_magellan/Structured/DBLP-GoogleScholar/test.txt",
+  "number_feature_columns": ["year"]
   },
   {
   "name": "Structured/Fodors-Zagats",
@@ -229,7 +237,8 @@
   "vocab": ["0", "1"],
   "trainset": "data/er_magellan/Structured/Fodors-Zagats/train.txt",
   "validset": "data/er_magellan/Structured/Fodors-Zagats/valid.txt",
-  "testset": "data/er_magellan/Structured/Fodors-Zagats/test.txt"
+  "testset": "data/er_magellan/Structured/Fodors-Zagats/test.txt",
+  "number_feature_columns": ["phone", "class"]
   },
   {
   "name": "Structured/iTunes-Amazon",
@@ -237,7 +246,8 @@
   "vocab": ["0", "1"],
   "trainset": "data/er_magellan/Structured/iTunes-Amazon/train.txt",
   "validset": "data/er_magellan/Structured/iTunes-Amazon/valid.txt",
-  "testset": "data/er_magellan/Structured/iTunes-Amazon/test.txt"
+  "testset": "data/er_magellan/Structured/iTunes-Amazon/test.txt",
+  "number_feature_columns": ["Price"]
   },
   {
   "name": "Structured/Walmart-Amazon",
@@ -245,7 +255,8 @@
   "vocab": ["0", "1"],
   "trainset": "data/er_magellan/Structured/Walmart-Amazon/train.txt",
   "validset": "data/er_magellan/Structured/Walmart-Amazon/valid.txt",
-  "testset": "data/er_magellan/Structured/Walmart-Amazon/test.txt"
+  "testset": "data/er_magellan/Structured/Walmart-Amazon/test.txt",
+  "number_feature_columns": ["price"]
   },
   {
   "name": "Textual/Abt-Buy",
@@ -253,15 +264,8 @@
   "vocab": ["0", "1"],
   "trainset": "data/er_magellan/Textual/Abt-Buy/train.txt",
   "validset": "data/er_magellan/Textual/Abt-Buy/valid.txt",
-  "testset": "data/er_magellan/Textual/Abt-Buy/test.txt"
-  },
-  {
-  "name": "Textual/Company",
-  "task_type": "classification",
-  "vocab": ["0", "1"],
-  "trainset": "data/er_magellan/Textual/Company/train.txt.tfidf",
-  "validset": "data/er_magellan/Textual/Company/valid.txt.tfidf",
-  "testset": "data/er_magellan/Textual/Company/test.txt.tfidf"
+  "testset": "data/er_magellan/Textual/Abt-Buy/test.txt",
+  "number_feature_columns": ["price"]
   },
 {
   "name": "wdc_all_title_small",

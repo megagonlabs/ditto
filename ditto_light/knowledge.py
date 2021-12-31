@@ -56,8 +56,8 @@ class ProductDKInjector(DKInjector):
     def initialize(self):
         """Initialize spacy"""
         self.nlp = spacy.load('en_core_web_lg')
-
-    def transform(self, entry):
+        
+    def transform_ditto(self, entry):
         """Transform a data entry.
 
         Use NER to regconize the product-related named entities and
@@ -105,8 +105,54 @@ class ProductDKInjector(DKInjector):
                 res += token.text + ' '
         return res.strip()
 
+    def transform_num_ditto(self, entry):
+        """Transform a data entry.
 
+        Use NER to regconize the product-related named entities and
+        mark them in the sequence. Normalize the numbers into the same format.
 
+        Args:
+            entry (str): the serialized data entry
+
+        Returns:
+            str: the transformed entry
+        """
+        res = ''
+        doc = self.nlp(entry, disable=['tagger', 'parser'])
+        ents = doc.ents
+        start_indices = {}
+        end_indices = {}
+
+        for ent in ents:
+            start, end, label = ent.start, ent.end, ent.label_
+            if label in ['NORP', 'GPE', 'LOC', 'PERSON', 'PRODUCT']:
+                start_indices[start] = 'PRODUCT'
+                end_indices[end] = 'PRODUCT'
+            if label in ['DATE', 'TIME']:
+                start_indices[start] = 'NUM'
+                end_indices[end] = 'NUM'
+                
+        for idx, token in enumerate(doc):
+            
+            if idx in start_indices:
+                res += start_indices[idx] + ' '
+
+            # normalizing the numbers
+            if not token.like_num:
+                if len(token.text) >= 7 and \
+                     any([ch.isdigit() for ch in token.text]):
+                    res += 'ID ' + token.text + ' '
+                else:
+                    res += token.text + ' '
+        return res.strip()
+
+    def transform(self, entry, is_ditto = True):
+        if is_ditto:
+            return self.transform_ditto(entry)
+        else:
+            return self.transform_num_ditto(entry)
+        
+        
 class GeneralDKInjector(DKInjector):
     """The domain-knowledge injector for publication and business data.
     """
@@ -114,7 +160,13 @@ class GeneralDKInjector(DKInjector):
         """Initialize spacy"""
         self.nlp = spacy.load('en_core_web_lg')
 
-    def transform(self, entry):
+    def transform(self, entry, is_ditto = True):
+        if is_ditto:
+            return self.transform_ditto(entry)
+        else:
+            return self.transform_num_ditto(entry)
+        
+    def transform_ditto(self, entry):
         """Transform a data entry.
 
         Use NER to regconize the product-related named entities and
@@ -135,6 +187,51 @@ class GeneralDKInjector(DKInjector):
         for ent in ents:
             start, end, label = ent.start, ent.end, ent.label_
             if label in ['PERSON', 'ORG', 'LOC', 'PRODUCT', 'DATE', 'QUANTITY', 'TIME']:
+                start_indices[start] = label
+                end_indices[end] = label
+
+        for idx, token in enumerate(doc):
+            if idx in start_indices:
+                res += start_indices[idx] + ' '
+
+            # normalizing the numbers
+            if token.like_num:
+                try:
+                    val = float(token.text)
+                    if val == round(val):
+                        res += '%d ' % (int(val))
+                    else:
+                        res += '%.2f ' % (val)
+                except:
+                    res += token.text + ' '
+            elif len(token.text) >= 7 and \
+                 any([ch.isdigit() for ch in token.text]):
+                res += 'ID ' + token.text + ' '
+            else:
+                res += token.text + ' '
+        return res.strip()
+
+    def transform_num_ditto(self, entry):
+        """Transform a data entry.
+
+        Use NER to regconize the product-related named entities and
+        mark them in the sequence. Normalize the numbers into the same format.
+
+        Args:
+            entry (str): the serialized data entry
+
+        Returns:
+            str: the transformed entry
+        """
+        res = ''
+        doc = self.nlp(entry, disable=['tagger', 'parser'])
+        ents = doc.ents
+        start_indices = {}
+        end_indices = {}
+
+        for ent in ents:
+            start, end, label = ent.start, ent.end, ent.label_
+            if label in ['PERSON', 'ORG', 'LOC', 'PRODUCT', 'DATE', 'TIME']:
                 start_indices[start] = label
                 end_indices[end] = label
 

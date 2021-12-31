@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Dec 30 10:06:23 2021
+
+@author: lydia
+"""
+
 import os
 import argparse
 import json
@@ -8,10 +15,10 @@ import random
 
 sys.path.insert(0, "Snippext_public")
 
-from ditto_light.dataset import DittoDataset
+from ditto_light.dataset_num import NumDittoDataset
 from ditto_light.summarize import Summarizer
 from ditto_light.knowledge import *
-#from ditto_light.ditto import train
+from ditto_light.num_ditto import train
 
 lm_mp = {'roberta': 'roberta-base',
          'distilbert': 'distilbert-base-uncased',
@@ -36,6 +43,7 @@ if __name__=="__main__":
     parser.add_argument("--dk", type=str, default="product")
     parser.add_argument("--summarize", dest="summarize", action="store_true")
     parser.add_argument("--size", type=int, default=None)
+    
 
     hp = parser.parse_args()
 
@@ -65,33 +73,34 @@ if __name__=="__main__":
     trainset = config['trainset']
     validset = config['validset']
     testset = config['testset']
+    numeric_feature_cols = config['number_feature_columns']
 
     # summarize the sequences up to the max sequence length
     hp.summarize = True
     if hp.summarize:
         summarizer = Summarizer(config, lm=hp.lm)
-        trainset = summarizer.transform_file(trainset, max_len=hp.max_len)
-        validset = summarizer.transform_file(validset, max_len=hp.max_len)
-        testset = summarizer.transform_file(testset, max_len=hp.max_len)
+        trainset = summarizer.transform_file(trainset, max_len=hp.max_len, is_num_ditto=True, numeric_col_names=numeric_feature_cols)
+        validset = summarizer.transform_file(validset, max_len=hp.max_len, is_num_ditto=True, numeric_col_names=numeric_feature_cols)
+        testset = summarizer.transform_file(testset, max_len=hp.max_len, is_num_ditto=True, numeric_col_names=numeric_feature_cols)
 
-    if hp.dk is not None:
-        if hp.dk == 'product':
-            injector = ProductDKInjector(config, hp.dk)
-        else:
-            injector = GeneralDKInjector(config, hp.dk)
+    # if hp.dk is not None:
+    #     if hp.dk == 'product':
+    #         injector = ProductDKInjector(config, hp.dk)
+    #     else:
+    #         injector = GeneralDKInjector(config, hp.dk)
 
-        trainset = injector.transform_file(trainset)
-        validset = injector.transform_file(validset)
-        testset = injector.transform_file(testset)
+    #     trainset = injector.transform_file(trainset, is_num_ditto=True, numeric_col_names=numeric_feature_cols)
+    #     validset = injector.transform_file(validset, is_num_ditto=True, numeric_col_names=numeric_feature_cols)
+    #     testset = injector.transform_file(testset, is_num_ditto=True, numeric_col_names=numeric_feature_cols)
 
     # load train/dev/test sets
-    train_dataset = DittoDataset(trainset,
+    train_dataset = NumDittoDataset(trainset,
                                    lm=hp.lm,
                                    max_len=hp.max_len,
                                    size=hp.size,
                                    da=hp.da)
-    valid_dataset = DittoDataset(validset, lm=hp.lm)
-    test_dataset = DittoDataset(testset, lm=hp.lm)
+    valid_dataset = NumDittoDataset(validset, lm=hp.lm)
+    test_dataset = NumDittoDataset(testset, lm=hp.lm)
 
     # train and evaluate the model
     train(train_dataset,

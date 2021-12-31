@@ -4,54 +4,74 @@ import torch.nn as nn
 import numpy as np
 import sklearn.metrics as metrics
 
-from .dataset import DittoDataset
+from .dataset_num import NumDittoDataset
 from torch.utils import data
-from transformers import AutoModel, AdamW, get_linear_schedule_with_warmup
+from transformers import AdamW, get_linear_schedule_with_warmup, BertConfig
 from tensorboardX import SummaryWriter
 # from apex import amp
 
-class DittoModel(nn.Module):
-    """A baseline model for EM."""
-
-    def __init__(self, device='cuda', lm='roberta', alpha_aug=0.8):
-        super().__init__()
-
-        self.bert = AutoModel.from_pretrained(lm)
-
-        self.device = device
-        self.alpha_aug = alpha_aug
-
-        # linear layer
-        hidden_size = self.bert.config.hidden_size
-        self.fc = torch.nn.Linear(hidden_size, 2)
+from transformers import BertForSequenceClassification
+from ditto_light.classification_NN import classification_NN
+from torch.nn import CosineSimilarity, BCEWithLogitsLoss, Sigmoid
 
 
-    def forward(self, x1, x2=None):
-        """Encode the left, right, and the concatenation of left+right.
-
-        Args:
-            x1 (LongTensor): a batch of ID's
-            x2 (LongTensor, optional): a batch of ID's (augmented)
-
-        Returns:
-            Tensor: binary prediction
-        """
-        x1 = x1.to(self.device) # (batch_size, seq_len)
-        if x2 is not None:
-            # MixDA
-            x2 = x2.to(self.device) # (batch_size, seq_len)
-            enc = self.bert(torch.cat((x1, x2)))[0][:, 0, :]
-            batch_size = len(x1)
-            enc1 = enc[:batch_size] # (batch_size, emb_size)
-            enc2 = enc[batch_size:] # (batch_size, emb_size)
-
-            aug_lam = np.random.beta(self.alpha_aug, self.alpha_aug)
-            enc = enc1 * aug_lam + enc2 * (1.0 - aug_lam)
+class NumDittoCrossencoder(BertForSequenceClassification):
+    """
+    reference BertForTokenClassification class in the hugging face library
+    https://huggingface.co/transformers/_modules/transformers/modeling_bert.html#BertForSequenceClassification
+    """
+    def __init__(self, config, alpha_aug=0.8):
+        super().__init__(config)
+        self.num_labels = config.num_labels
+        
+        if (config.num_input_dimension != 1):
+            cos = CosineSimilarity()
+            self.calculate_similiarity = lambda a, b: cos(a,b).view(-1,1)
+            config.num_input_dimension = 1
         else:
-            enc = self.bert(x1)[0][:, 0, :]
+            self.calculate_similiarity = self.calculate_difference
+            
+        self.classifier = classification_NN(
+            inputs_dimension = config.num_input_dimension + config.text_input_dimension,
+            num_hidden_lyr = config.num_hidden_lyr,
+            dropout_prob = 0.2,
+            bn =True
+            )
+        
+        self.init_weights()
+        self.loss_fct  = BCEWithLogitsLoss()
+        
+    
+    def forward(
+            self,
+            numerical_featuresA,
+            numerical_featuresB,
+            input_ids,
+            attention_mask,
+            labels,
+            token_type_ids):
+        
+        # compute the cls embedding of the text features
+        output = self.bert(
+            input_ids = input_ids,
+            attention_mask = attention_mask,
+            token_type_ids = token_type_ids
+            )
+        cls_output = self.dropout(output[1])
+        
+        # calculate cossine similiary of numeric features
+        numerical_features = self.calculate_similiarity(
+            numerical_featuresA,
+            numerical_featuresB)
+        
+        # Combined the text embedding with the similarity factor of numeric features
+        all_features = torch.cat((cls_output, numerical_features.view(-1,1)), dim=1)
 
-        return self.fc(enc) # .squeeze() # .sigmoid()
-
+        return self.classifier(all_features)
+    
+    def calculate_difference(self, tensorA, tensorB):
+        #return torch.abs(tensorA - tensorB)
+        return (tensorA - tensorB)
 
 def evaluate(model, iterator, threshold=None):
     """Evaluate a model on a validation/test dataset
@@ -66,16 +86,21 @@ def evaluate(model, iterator, threshold=None):
         float (optional): if threshold is not provided, the threshold
             value that gives the optimal F1
     """
-    all_p = []
     all_y = []
     all_probs = []
+    calculate_prediction = Sigmoid()
     with torch.no_grad():
         for batch in iterator:
-            x, y = batch
-            logits = model(x)
-            probs = logits.softmax(dim=1)[:, 1]
+            input_ids, labels, attention_mask, token_type_ids, num_1, num_2 = batch
+            logits = model(numerical_featuresA = num_1,
+                            numerical_featuresB = num_2,
+                            input_ids = input_ids,
+                            attention_mask = attention_mask,
+                            labels = labels,
+                            token_type_ids  = token_type_ids)
+            probs = calculate_prediction(logits)
             all_probs += probs.cpu().numpy().tolist()
-            all_y += y.cpu().numpy().tolist()
+            all_y += labels.cpu().numpy().tolist()
 
     if threshold is not None:
         pred = [1 if p > threshold else 0 for p in all_probs]
@@ -83,11 +108,12 @@ def evaluate(model, iterator, threshold=None):
         return f1
     else:
         best_th = 0.5
-        f1 = 0.0 # metrics.f1_score(all_y, all_p)
+        f1 = 0.0
 
         for th in np.arange(0.0, 1.0, 0.05):
             pred = [1 if p > th else 0 for p in all_probs]
             new_f1 = metrics.f1_score(all_y, pred)
+            #new_f1 = metrics.f1_score(all_y, pred, zero_division=1, average="micro")
             if new_f1 > f1:
                 f1 = new_f1
                 best_th = th
@@ -95,7 +121,7 @@ def evaluate(model, iterator, threshold=None):
         return f1, best_th
 
 
-def train_step(train_iter, model, optimizer, scheduler, hp):
+def train_step(train_iter, model, optimizer, scheduler, hp, device):
     """Perform a single training step
 
     Args:
@@ -108,19 +134,20 @@ def train_step(train_iter, model, optimizer, scheduler, hp):
     Returns:
         None
     """
-    criterion = nn.CrossEntropyLoss()
-    # criterion = nn.MSELoss()
+    criterion = nn.BCEWithLogitsLoss()
+    
     for i, batch in enumerate(train_iter):
         optimizer.zero_grad()
 
-        if len(batch) == 2:
-            x, y, _, _ = batch
-            prediction = model(x)
-        else:
-            x1, x2, y, _= batch
-            prediction = model(x1, x2)
+        input_ids, labels, attention_mask, token_type_ids, num_1, num_2 = batch
+        prediction = model(numerical_featuresA = num_1,
+                            numerical_featuresB = num_2,
+                            input_ids = input_ids,
+                            attention_mask = attention_mask,
+                            labels = labels,
+                            token_type_ids  = token_type_ids)
 
-        loss = criterion(prediction, y.to(model.device))
+        loss = criterion(prediction, labels.float().view(-1,1).to(device))
 
         # if hp.fp16:
         #     with amp.scale_loss(loss, optimizer) as scaled_loss:
@@ -128,6 +155,7 @@ def train_step(train_iter, model, optimizer, scheduler, hp):
         # else:
         #     loss.backward()
         loss.backward()
+            
         optimizer.step()
         scheduler.step()
         if i % 10 == 0: # monitoring
@@ -135,7 +163,7 @@ def train_step(train_iter, model, optimizer, scheduler, hp):
         del loss
 
 
-def train(trainset, validset, testset, run_tag, hp):
+def train(trainset, validset, testset, run_tag, hp, num_hidden_lyr=2):
     """Train and evaluate the model
 
     Args:
@@ -168,15 +196,22 @@ def train(trainset, validset, testset, run_tag, hp):
                                  collate_fn=padder)
 
     # initialize model, optimizer, and LR scheduler
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    model = DittoModel(device=device,
-                       lm=hp.lm,
-                       alpha_aug=hp.alpha_aug)
+    device = setup_cuda()
+    
+    # Build config for the bert classificaiton model
+    bert_config = build_bert_config(
+        len(trainset.num_pairs[0][0]),
+        hp.lm,
+        num_hidden_lyr)
+    
+    model = NumDittoCrossencoder(config = bert_config,
+                                 alpha_aug=hp.alpha_aug)
     model = model.to(device)
+    
     optimizer = AdamW(model.parameters(), lr=hp.lr)
 
     # if hp.fp16:
-    #     model, optimizer = amp.initialize(model, optimizer, opt_level='O2')
+    #    model, optimizer = amp.initialize(model, optimizer, opt_level='O2')
     num_steps = (len(trainset) // hp.batch_size) * hp.n_epochs
     scheduler = get_linear_schedule_with_warmup(optimizer,
                                                 num_warmup_steps=0,
@@ -189,7 +224,7 @@ def train(trainset, validset, testset, run_tag, hp):
     for epoch in range(1, hp.n_epochs+1):
         # train
         model.train()
-        train_step(train_iter, model, optimizer, scheduler, hp)
+        train_step(train_iter, model, optimizer, scheduler, hp, device)
 
         # eval
         model.eval()
@@ -221,3 +256,25 @@ def train(trainset, validset, testset, run_tag, hp):
         writer.add_scalars(run_tag, scalars, epoch)
 
     writer.close()
+
+def build_bert_config(num_input_dimension, 
+                      lm, 
+                      num_hidden_lyr,
+                      attention_probs_dropout_prob = 0.2,
+                      hidden_dropout_prob = 0.1):
+    config = BertConfig.from_pretrained(lm, num_labels=2)
+    config.text_input_dimension = config.hidden_size
+    config.num_input_dimension = num_input_dimension
+    config.num_hidden_lyr = num_hidden_lyr
+    config.lm = lm
+    config.attention_probs_dropout_prob = attention_probs_dropout_prob
+    config.hidden_dropout_prob = hidden_dropout_prob
+    return config
+
+def setup_cuda():
+  if torch.cuda.is_available():    
+      print('Running on GPU')
+      return torch.device("cuda") 
+  else:
+      print('Running on CPU')
+      return torch.device("cpu")
