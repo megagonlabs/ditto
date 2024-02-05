@@ -184,7 +184,7 @@ def train(trainset, validset, testset, run_tag, hp):
     optimizer = AdamW(model.parameters(), lr=hp.lr)
 
     if hp.fp16:
-        model, optimizer = amp.initialize(model, optimizer, opt_level='O2')
+        model, optimizer = torch.cuda.amp.initialize(model, optimizer, opt_level='O2')
     num_steps = (len(trainset) // hp.batch_size) * hp.n_epochs
     scheduler = get_linear_schedule_with_warmup(optimizer,
                                                 num_warmup_steps=0,
