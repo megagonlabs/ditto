@@ -13,7 +13,6 @@ from .dataset import DittoDataset
 from torch.utils import data
 from transformers import AutoModel, AdamW, get_linear_schedule_with_warmup
 from tensorboardX import SummaryWriter
-from apex import amp
 
 lm_mp = {'roberta': 'roberta-base',
          'distilbert': 'distilbert-base-uncased'}
@@ -133,7 +132,7 @@ def train_step(train_iter, model, optimizer, scheduler, hp):
         loss = criterion(prediction, y.to(model.device))
 
         if hp.fp16:
-            with amp.scale_loss(loss, optimizer) as scaled_loss:
+            with torch.cuda.amp.scale_loss(loss, optimizer) as scaled_loss:
                 scaled_loss.backward()
         else:
             loss.backward()
