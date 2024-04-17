@@ -1,10 +1,13 @@
-# Ditto: Deep Entity Matching with Pre-Trained Language Models
+# How to run DittoLITE experiments (instuctions): 
 
-*Update: a new light-weight version based on new versions of Transformers*
+1. Ensure you are on branch "modify-model"
+2. Install the required packages into a conda environment
+3. DeepBlocker is included as a submodule inside this repo. Ensure the submodule is initialized.
+4. Inside DeepBlocker directory, create the following folders: embedding, data.
+5. Inside embedding, download FastText model embeddings and choose the model 'wiki.en.bin'. [Link](https://fasttext.cc/docs/en/pretrained-vectors.html)
+6. Inside data, download the datasets from [here](https://github.com/anhaidgroup/deepmatcher/blob/master/Datasets.md) using the 'Browse' option for each dataset.
+7. Use create_matches_csv.py script to create the matches.csv file for each dataset. Conceptually, this is done by concatenating train, val, test csvs, retaining only the rows with label 1 and removing the label column. 
 
-Ditto is an entity matching (EM) solution based on pre-trained language models such as BERT. Given a pair of data entries, EM checks if the two entries refer to the same real-world entities (products, businesses, publications, persons, etc.). Ditto leverages the powerful language understanding capability of pre-trained language models (LMs) via fine-tuning. Ditto serializes each data entry into a text sequence and casts EM as a sequence-pair classification problem solvable by LM fine-tuning. We also employ a set of novel optimizations including summarization, injecting domain-specific knowledge, and data augmentation to further boost the performance of the matching models.
-
-For more technical details, see the [Deep Entity Matching with Pre-Trained Language Models](https://arxiv.org/abs/2004.00584) paper.
 
 ## Requirements
 
@@ -21,86 +24,39 @@ pip install -r requirements.txt
 python -m spacy download en_core_web_lg
 ```
 
-## The EM pipeline
+## Training DeepBlocker models
+In DeepBlocker_v1/main.py file, change folder_root and cols_to_block and run to train the blocker model. The blocking metrics: Recall, CSSR and runtimes (time elapsed) will be printed out at the end of training. 
 
-A typical EM pipeline consists of two phases: blocking and matching. 
-![The EM pipeline of Ditto.](ditto.jpg)
-The blocking phase typically consists of simple heuristics that reduce the number of candidate pairs to perform the pairwise comparisons. Ditto optimizes the matching phase which performs the actual pairwise comparisons. The input to Ditto consists of a set of labeled candidate data entry pairs. Each data entry is pre-serialized into the following format:
+## Training the Ditto Distill-BERT Blocker
 ```
-COL title VAL microsoft visio standard 2007 version upgrade COL manufacturer VAL microsoft COL price VAL 129.95
+cd {PROJECT_ROOT}/ditto/blocker
 ```
-where ``COL`` and ``VAL`` are special tokens to indicate the starts of attribute names and attribute values. A complete example pair is of the format
-```
-<entry_1> \t <entry_2> \t <label>
-```
-where the two entries are serialized and ``<label>`` is either ``0`` (no-match) or ``1`` (match). In our experiments, we evaluated Ditto using two benchmarks:
-* the [ER_Magellan benchmarks](https://github.com/anhaidgroup/deepmatcher/blob/master/Datasets.md) used in the [DeepMatcher paper](http://pages.cs.wisc.edu/~anhai/papers1/deepmatcher-sigmod18.pdf). This benchmark contains 13 datasets of 3 categories: ``Structured``, ``Dirty``, and ``Textual`` representing different dataset characteristics. 
-* the [WDC product matching benchmark](http://webdatacommons.org/largescaleproductcorpus/v2/index.html). This benchmark contains e-commerce product offering pairs from 4 domains: ``cameras``, ``computers``, ``shoes``, and ``watches``. The training data of each domain is also sub-sampled into different sizes, ``small``, ``medium``, ``large``, and ``xlarge`` to test the label efficiency of the models. 
+In train_blocker.py file, adjust train_fn and valid_fn as needed.
+python train_blocker.py
 
-We provide the serialized version of their datasets in ``data/``. The dataset configurations can be found in ``configs.json``. 
+## Measure DITTO Distill-BERT Blocker performance
+```
+cd {PROJECT_ROOT}/ditto/blocking
+```
+Below is a sample script run. Change the path to datasets accordingly. This will print out metrics: Recall, CSSR and runtime (time elapsed).
+```
+python blocker.py --model_fn distilbert-base-uncased --left_fn /home/sridhar/ditto/DeepBlocker_v1/data/Dirty/iTunes-Amazon/tableA.csv --right_fn /home/sridhar/ditto/DeepBlocker_v1/data/Dirty/iTunes-Amazon/tableB.csv --golden_fn /home/sridhar/ditto/DeepBlocker_v1/data/Dirty/iTunes-Amazon/matches.csv
+```
 
 ## Training with Ditto
-
-To train the matching model with Ditto:
+To train the matching model with Ditto, adjust task parameter according to the dataset used. Adjust lm parameter and include one among these values: ['roberta-base','prajjwal1
+/
+bert-mini','prajjwal1
+/
+bert-tiny']
 ```
-CUDA_VISIBLE_DEVICES=0 python train_ditto.py \
+python train_ditto.py \
   --task Structured/Beer \
-  --batch_size 64 \
-  --max_len 64 \
-  --lr 3e-5 \
-  --n_epochs 40 \
-  --lm distilbert \
-  --fp16 \
-  --da del \
-  --dk product \
-  --summarize
+  --n_epochs 50 \
+  --lm roberta-base \
 ```
+
 The meaning of the flags:
 * ``--task``: the name of the tasks (see ``configs.json``)
-* ``--batch_size``, ``--max_len``, ``--lr``, ``--n_epochs``: the batch size, max sequence length, learning rate, and the number of epochs
-* ``--lm``: the language model. We now support ``bert``, ``distilbert``, and ``albert`` (``distilbert`` by default).
-* ``--fp16``: whether train with the half-precision floating point optimization
-* ``--da``, ``--dk``, ``--summarize``: the 3 optimizations of Ditto. See the followings for details.
-* ``--save_model``: if this flag is on, then save the checkpoint to ``{logdir}/{task}/model.pt``.
-
-### Data augmentation (DA)
-
-If the ``--da`` flag is set, then ditto will train the matching model with MixDA, a data augmentation technique for text data. To use data augmentation, one transformation operator needs to be specified. We currently support the following operators for EM:
-
-
-| Operators       | Details                                           |
-|-----------------|---------------------------------------------------|
-|del              | Delete a span of tokens                      |
-|swap             | Shuffle a span of tokens                          |
-|drop_col         | Delete a whole attribute                          |
-|append_col       | Move an attribute (append to the end of another attr) |
-|all              | Apply all the operators uniformly at random    |
-
-### Domain Knowledge (DK)
-
-Inject domain knowledge to the input sequences if the ``--dk`` flag is set. Ditto will preprocess the serialized entries by
-* tagging informative spans (e.g., product ID, persons name) by inserting special tokens (e.g., ID, PERSON)
-* normalizing certain spans (e.g., numbers)
-We currently support two injection modes: ``--dk general`` and ``--dk product`` for the general domain and for the product domain respectively. See ``ditto/knowledge.py`` for more details.
-
-### Summarization
-When the ``--summarize`` flag is set, the input sequence will be summarized by retaining only the high TF-IDF tokens. The resulting sequence will be of length no more than the max sequence length (i.e., ``--max_len``). See ``ditto/summarize.py`` for more details.
-
-## To run the matching models
-Use the command:
-```
-CUDA_VISIBLE_DEVICES=0 python matcher.py \
-  --task wdc_all_small \
-  --input_path input/input_small.jsonl \
-  --output_path output/output_small.jsonl \
-  --lm distilbert \
-  --max_len 64 \
-  --use_gpu \
-  --fp16 \
-  --checkpoint_path checkpoints/
-```
-where ``--task`` is the task name, ``--input_path`` is the input file of the candidate pairs in the jsonlines format, ``--output_path`` is the output path, and ``checkpoint_path`` is the path to the model checkpoint (same as ``--logdir`` when training). The language model ``--lm`` and ``--max_len`` should be set to the same as the one used in training. The same ``--dk`` and ``--summarize`` flags also need to be specified if they are used at the training time.
-
-## Colab notebook
-
-You can also run training and prediction using this colab [notebook](https://colab.research.google.com/drive/1eyQbockBSxxQ_tuW5F1XKyeVOM1HT_Ro?usp=sharing).
+* ``--lm``: the language model.
+* ``--save_model``: if this flag is on, then save the checkpoint to ``{logdir}/{task}/model.pt``

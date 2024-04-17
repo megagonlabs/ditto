@@ -71,6 +71,11 @@ def train(hp):
     dev_dataloader = DataLoader(dev_data,
                                 shuffle=False,
                                 batch_size=hp.batch_size)
+    
+    print('dev data')
+    for sample in dev_data:
+        print(sample)
+
     evaluator = EmbeddingSimilarityEvaluator(dev_dataloader)
 
     warmup_steps = math.ceil(len(train_dataloader) \

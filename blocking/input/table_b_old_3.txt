@@ -1,0 +1,3 @@
+COL Beer_Name VAL Mountain City Amber Ale COL Brew_Factory_Name VAL Tommyknocker Brewery COL Style VAL American Amber / Red Ale COL ABV VAL 5.40 % 
+COL Beer_Name VAL Willoughby American Amber Ale COL Brew_Factory_Name VAL Willoughby Brewing COL Style VAL American Amber / Red Ale COL ABV VAL 4.90 % 
+COL Beer_Name VAL Riverbend Barrel Aged Right Said Red COL Brew_Factory_Name VAL Riverbend Brewing & Sports Pub COL Style VAL American Strong Ale COL ABV VAL 9.20 % 

@@ -13,19 +13,32 @@ from .dataset import DittoDataset
 from torch.utils import data
 from transformers import AutoModel, AdamW, get_linear_schedule_with_warmup
 from tensorboardX import SummaryWriter
+import collections.abc as container_abcs
 from apex import amp
+import time
+
 
 lm_mp = {'roberta': 'roberta-base',
-         'distilbert': 'distilbert-base-uncased'}
+         'distilbert': 'distilbert-base-uncased',
+         }
+
+#roberta ,flan t5, minbert, tinylm
+
+# flan-t5-small
+# mini-bert
+# 
+
 
 class DittoModel(nn.Module):
     """A baseline model for EM."""
 
-    def __init__(self, device='cuda', lm='roberta', alpha_aug=0.8):
+    #default lm was 'roberta'
+    def __init__(self, device='cuda', lm='mini-bert', alpha_aug=0.8):
         super().__init__()
         if lm in lm_mp:
             self.bert = AutoModel.from_pretrained(lm_mp[lm])
         else:
+            print('init from string')
             self.bert = AutoModel.from_pretrained(lm)
 
         self.device = device
@@ -63,7 +76,7 @@ class DittoModel(nn.Module):
         return self.fc(enc) # .squeeze() # .sigmoid()
 
 
-def evaluate(model, iterator, threshold=None):
+def evaluate(model, iterator,dataset_size, threshold=None):
     """Evaluate a model on a validation/test dataset
 
     Args:
@@ -80,9 +93,14 @@ def evaluate(model, iterator, threshold=None):
     all_y = []
     all_probs = []
     with torch.no_grad():
+        total_time = 0.0
         for batch in iterator:
             x, y = batch
+            start_time = time.time()
             logits = model(x)
+            end_time = time.time()
+            time_elapsed = (end_time-start_time)/(len(y))
+            total_time += time_elapsed
             probs = logits.softmax(dim=1)[:, 1]
             all_probs += probs.cpu().numpy().tolist()
             all_y += y.cpu().numpy().tolist()
@@ -102,7 +120,8 @@ def evaluate(model, iterator, threshold=None):
                 f1 = new_f1
                 best_th = th
 
-        return f1, best_th
+        print('Run time: ',(total_time/len(iterator))*dataset_size)
+        return f1, best_th,total_time/len(iterator)
 
 
 def train_step(train_iter, model, optimizer, scheduler, hp):
@@ -139,7 +158,7 @@ def train_step(train_iter, model, optimizer, scheduler, hp):
             loss.backward()
         optimizer.step()
         scheduler.step()
-        if i % 10 == 0: # monitoring
+        if i % 500 == 0: # monitoring
             print(f"step: {i}, loss: {loss.item()}")
         del loss
 
@@ -158,6 +177,8 @@ def train(trainset, validset, testset, run_tag, hp):
     Returns:
         None
     """
+
+    print('len trainset',len(trainset))
     padder = trainset.pad
     # create the DataLoaders
     train_iter = data.DataLoader(dataset=trainset,
@@ -195,6 +216,7 @@ def train(trainset, validset, testset, run_tag, hp):
     writer = SummaryWriter(log_dir=hp.logdir)
 
     best_dev_f1 = best_test_f1 = 0.0
+    running_time = 0.0
     for epoch in range(1, hp.n_epochs+1):
         # train
         model.train()
@@ -202,8 +224,10 @@ def train(trainset, validset, testset, run_tag, hp):
 
         # eval
         model.eval()
-        dev_f1, th = evaluate(model, valid_iter)
-        test_f1 = evaluate(model, test_iter, threshold=th)
+        dataset_size = (len(trainset)+len(validset)+len(testset))
+        dev_f1, th, total_time = evaluate(model, valid_iter,dataset_size)
+        running_time += total_time
+        test_f1 = evaluate(model, test_iter,dataset_size, threshold=th)
 
         if dev_f1 > best_dev_f1:
             best_dev_f1 = dev_f1
@@ -229,4 +253,5 @@ def train(trainset, validset, testset, run_tag, hp):
                    't_f1': test_f1}
         writer.add_scalars(run_tag, scalars, epoch)
 
+    print('Running time (s)',(running_time/hp.n_epochs)*(len(trainset)+len(validset)+len(testset)))
     writer.close()

@@ -1,0 +1,8 @@
+fasttext
+numpy
+pandas
+pathlib
+scipy
+sklearn
+torch
+torchtext

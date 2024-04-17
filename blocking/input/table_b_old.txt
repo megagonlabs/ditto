@@ -1,74 +1,3 @@
-COL Beer_Name VAL Upland Easy Chair Amber Ale COL Brew_Factory_Name VAL Upland Brewing Company COL Style VAL Amber Ale COL ABV VAL 5.60 % 
-COL Beer_Name VAL Brew Kahuna NW Red Ale COL Brew_Factory_Name VAL Sky High Brewing COL Style VAL American Amber / Red Ale COL ABV VAL 5.20 % 
-COL Beer_Name VAL Clifford 's Big Red Ale COL Brew_Factory_Name VAL Funky Buddha Brewery COL Style VAL American Amber / Red Ale COL ABV VAL 9.70 % 
-COL Beer_Name VAL Fox and Hound Red Fox Amber Ale COL Brew_Factory_Name VAL Anheuser-Busch InBev COL Style VAL Amber Ale COL ABV VAL 5.10 % 
-COL Beer_Name VAL Heavy Seas Desert Island Series American Honey Amber Ale COL Brew_Factory_Name VAL Heavy Seas Brewing Company COL Style VAL Amber Ale COL ABV VAL 4.90 % 
-COL Beer_Name VAL Red Dirt Imperial Red Ale COL Brew_Factory_Name VAL Wiley Roots Brewing Co COL Style VAL American Amber / Red Ale COL ABV VAL 8.20 % 
-COL Beer_Name VAL Mammoth Real McCoy Amber Ale COL Brew_Factory_Name VAL Mammoth Brewing Company COL Style VAL Altbier COL ABV VAL 4.50 % 
-COL Beer_Name VAL Rock Bottom Red Ale COL Brew_Factory_Name VAL Rock Bottom Restaurant & Brewery COL Style VAL American Amber / Red Ale COL ABV VAL 5.60 % 
-COL Beer_Name VAL Big Time Lift Ticket American Red Ale COL Brew_Factory_Name VAL Big Time Brewery COL Style VAL India Pale Ale &#40; IPA &#41; COL ABV VAL 7 % 
-COL Beer_Name VAL Ballast Point Tongue Buckler Imperial Red Ale COL Brew_Factory_Name VAL Ballast Point Brewing Company COL Style VAL American Strong Ale COL ABV VAL 10 % 
-COL Beer_Name VAL Hollywood Beach Red Tide Amber Ale COL Brew_Factory_Name VAL Hollywood Beach Brewing Company COL Style VAL Amber Ale COL ABV VAL 5.20 % 
-COL Beer_Name VAL 406 Imperial Red Ale COL Brew_Factory_Name VAL 406 Brewing Company COL Style VAL American Strong Ale COL ABV VAL 9.20 % 
-COL Beer_Name VAL Sanibel Red Island Ale COL Brew_Factory_Name VAL Point Ybel Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 5.60 % 
-COL Beer_Name VAL 23rd Street Pumpkin Ale Bourbon Barrel Aged COL Brew_Factory_Name VAL 23rd Street Brewery COL Style VAL Specialty Grain COL ABV VAL - 
-COL Beer_Name VAL Rock Bottom Orland Park King of Hearts Imperial Red Ale COL Brew_Factory_Name VAL Rock Bottom Orland Park COL Style VAL American Strong Ale COL ABV VAL 7.60 % 
-COL Beer_Name VAL Outpost Mr. Grain Jeans Organic Amber Ale COL Brew_Factory_Name VAL Lakefront Brewery COL Style VAL Amber Ale COL ABV VAL 5.50 % 
-COL Beer_Name VAL Baird Red Rose Amber Ale COL Brew_Factory_Name VAL Baird Brewing Co. . COL Style VAL California Common COL ABV VAL 5.40 % 
-COL Beer_Name VAL Legends of the Bay Giant_s Tomb COL Brew_Factory_Name VAL Hockley Valley Brewing & Malting Company COL Style VAL Amber Ale COL ABV VAL 5 % 
-COL Beer_Name VAL Big Bear Mountain Orange Blossom Amber Ale COL Brew_Factory_Name VAL Big Bear Mountain Brewery COL Style VAL Fruit Beer COL ABV VAL 4.50 % 
-COL Beer_Name VAL Sierra Andina Alpamayo Amber Ale COL Brew_Factory_Name VAL Sierra Andina COL Style VAL Amber Ale COL ABV VAL 5.80 % 
-COL Beer_Name VAL Double Dragon Imperial Red Ale COL Brew_Factory_Name VAL Phillips Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 8.20 % 
-COL Beer_Name VAL Rocket City Red COL Brew_Factory_Name VAL Straight To Ale COL Style VAL American Amber / Red Ale COL ABV VAL 5.00 % 
-COL Beer_Name VAL Amber Waves Ale COL Brew_Factory_Name VAL Capitol City Brewing COL Style VAL American Amber / Red Ale COL ABV VAL 5.40 % 
-COL Beer_Name VAL Aqula American Amber Ale COL Brew_Factory_Name VAL Bier Kaffee Aqula COL Style VAL American Amber / Red Ale COL ABV VAL 4.50 % 
-COL Beer_Name VAL Tongue Buckler ( Bourbon Barrel Aged ) COL Brew_Factory_Name VAL Ballast Point Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 10.00 % 
-COL Beer_Name VAL Main Street Amber Ale COL Brew_Factory_Name VAL Fifty West Brewing Co COL Style VAL American Amber / Red Ale COL ABV VAL 4.60 % 
-COL Beer_Name VAL Amazon Beer Priprioca Red Ale COL Brew_Factory_Name VAL Amazon Beer COL Style VAL Amber Ale COL ABV VAL 6 % 
-COL Beer_Name VAL Willoughby American Amber Ale COL Brew_Factory_Name VAL Willoughby Brewing Co. . COL Style VAL Amber Ale COL ABV VAL 5.50 % 
-COL Beer_Name VAL Ulysses Imperial Red Ale COL Brew_Factory_Name VAL Barley 's Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL - 
-COL Beer_Name VAL Imperial Red Ale ( Spring Seasonal ) COL Brew_Factory_Name VAL Edge Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 8.50 % 
-COL Beer_Name VAL Red Rocket Amber Ale COL Brew_Factory_Name VAL Third Base Sports Bar & Brewery COL Style VAL American Amber / Red Ale COL ABV VAL 6.40 % 
-COL Beer_Name VAL Lavery Imperial Red Ale &#40; IRA &#41; COL Brew_Factory_Name VAL Lavery Brewing Company COL Style VAL American Strong Ale COL ABV VAL 8.20 % 
-COL Beer_Name VAL 21st Amendment Bourbon Barrel Lower da Boom Barleywine COL Brew_Factory_Name VAL 21st Amendment Brewery COL Style VAL Barley Wine COL ABV VAL 9.50 % 
-COL Beer_Name VAL Lompoc Bourbon Barrel Aged Old Tavern Rat COL Brew_Factory_Name VAL Lompoc Brewing COL Style VAL Barley Wine COL ABV VAL 9.70 % 
-COL Beer_Name VAL Figure Eight Bourbon Barrel Aged Jumbo Love COL Brew_Factory_Name VAL Figure Eight Brewing COL Style VAL Barley Wine COL ABV VAL - 
-COL Beer_Name VAL Bourbon Barrel Aged Horus Imperial Red COL Brew_Factory_Name VAL Elevator Brewery & Draught Haus COL Style VAL American Amber / Red Ale COL ABV VAL 12.00 % 
-COL Beer_Name VAL Liberty Street Red Glare Amber Ale COL Brew_Factory_Name VAL Liberty Street Brewing Company COL Style VAL Amber Ale COL ABV VAL 5.20 % 
-COL Beer_Name VAL Hillcrest Big Red Balls COL Brew_Factory_Name VAL Hillcrest Brewing Company COL Style VAL Imperial IPA COL ABV VAL 8 % 
-COL Beer_Name VAL Kettle House Bourbon Barrel Road Rash Imperial Red Ale COL Brew_Factory_Name VAL Kettle House Brewing Company COL Style VAL American Strong Ale COL ABV VAL 13 % 
-COL Beer_Name VAL Bushfire American Red COL Brew_Factory_Name VAL Granite Falls Brewing Co. . COL Style VAL American Amber / Red Ale COL ABV VAL 5.00 % 
-COL Beer_Name VAL Kern River Dirty Hippie Imperial Red Ale COL Brew_Factory_Name VAL Kern River Brewing COL Style VAL American Strong Ale COL ABV VAL 8 % 
-COL Beer_Name VAL Arrow Point Amber COL Brew_Factory_Name VAL Bainbridge Island Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 5.40 % 
-COL Beer_Name VAL Green Flash Hop Head Red Ale COL Brew_Factory_Name VAL Green Flash Brewing Co. . COL Style VAL American Amber / Red Ale COL ABV VAL 8.10 % 
-COL Beer_Name VAL Marble Imperial Red Ale COL Brew_Factory_Name VAL Marble Brewery COL Style VAL American Strong Ale COL ABV VAL 9 % 
-COL Beer_Name VAL Third Base Red Rocket Amber Ale COL Brew_Factory_Name VAL Third Base Sports Bar & Brewery COL Style VAL Amber Ale COL ABV VAL 4.60 % 
-COL Beer_Name VAL Jazz Beer Tarraco Amber COL Brew_Factory_Name VAL Tarraco Beer COL Style VAL American Amber / Red Ale COL ABV VAL 6.90 % 
-COL Beer_Name VAL Lower De Boom Barleywine COL Brew_Factory_Name VAL 21st Amendment Brewery COL Style VAL American Barleywine COL ABV VAL 11.50 % 
-COL Beer_Name VAL Red Fox Amber Ale COL Brew_Factory_Name VAL Rogue Ales COL Style VAL American Amber / Red Ale COL ABV VAL - 
-COL Beer_Name VAL Honey Amber Ale COL Brew_Factory_Name VAL RJ Rockers Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 5.80 % 
-COL Beer_Name VAL Granite Falls Bushfire American Red Ale COL Brew_Factory_Name VAL Granite Falls Brewing Company COL Style VAL Amber Ale COL ABV VAL 5 % 
-COL Beer_Name VAL Three Heads Buffalo Soul Jah Imperial Red Ale COL Brew_Factory_Name VAL Custom Brewcrafters COL Style VAL American Strong Ale COL ABV VAL 9.20 % 
-COL Beer_Name VAL Intuition Barrel Aged Riverside Red COL Brew_Factory_Name VAL Intuition Ale Works COL Style VAL Amber Ale COL ABV VAL 7.80 % 
-COL Beer_Name VAL Red Dread Imperial Red Ale COL Brew_Factory_Name VAL Bitter Root Brewing COL Style VAL American Amber / Red Ale COL ABV VAL 8.24 % 
-COL Beer_Name VAL AleSmith YuleSmith &#40; Winter &#41; Imperial Red Ale COL Brew_Factory_Name VAL AleSmith Brewing Company COL Style VAL American Strong Ale COL ABV VAL 8.50 % 
-COL Beer_Name VAL Black Shirt American India Red Ale COL Brew_Factory_Name VAL Black Shirt Brewing Company COL Style VAL American Strong Ale COL ABV VAL 7.09 % 
-COL Beer_Name VAL Alley Kat Rocky Mountain Red Ale &#40; The Cheesecake Cafe &#41; COL Brew_Factory_Name VAL Alley Kat Brewing Company COL Style VAL Irish Ale COL ABV VAL - 
-COL Beer_Name VAL Legends Of The Bay Giant 's Tomb COL Brew_Factory_Name VAL Hockley Valley Brewing Co. . COL Style VAL American Amber / Red Ale COL ABV VAL 5.00 % 
-COL Beer_Name VAL Unite Red Rye Ale COL Brew_Factory_Name VAL The Pike Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 4.60 % 
-COL Beer_Name VAL Lagunitas Imperial Red Ale COL Brew_Factory_Name VAL Lagunitas Brewing Company &#40; Heineken &#41; COL Style VAL American Strong Ale COL ABV VAL 7.80 % 
-COL Beer_Name VAL Twisted Stick Amber Ale COL Brew_Factory_Name VAL Portneuf Valley Brewing COL Style VAL American Amber / Red Ale COL ABV VAL - 
-COL Beer_Name VAL Three Sheets Barleywine ( Syrah Barrel Aged ) COL Brew_Factory_Name VAL Ballast Point Brewing Company COL Style VAL American Barleywine COL ABV VAL 9.00 % 
-COL Beer_Name VAL Amber Ale With Spanish Orange COL Brew_Factory_Name VAL Dangerous Man Brewing COL Style VAL American Amber / Red Ale COL ABV VAL 6.00 % 
-COL Beer_Name VAL Pike Old Bawdy Barley Wine COL Brew_Factory_Name VAL The Pike Brewing Company COL Style VAL American Barleywine COL ABV VAL 9.90 % 
-COL Beer_Name VAL Bristol Old No. 23 Barley Wine COL Brew_Factory_Name VAL Bristol Brewing Company COL Style VAL Barley Wine COL ABV VAL 11.25 % 
-COL Beer_Name VAL Lavery Imperial Red Ale COL Brew_Factory_Name VAL Lavery Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 8.20 % 
-COL Beer_Name VAL Two Brothers Revelry Imperial Red Ale COL Brew_Factory_Name VAL Two Brothers Brewing Company COL Style VAL American Strong Ale COL ABV VAL 9.50 % 
-COL Beer_Name VAL Golden City Centurion Barleywine Ale COL Brew_Factory_Name VAL Golden City Brewery COL Style VAL Barley Wine COL ABV VAL 11.20 % 
-COL Beer_Name VAL Iron Horse Fresh Hop Imperial Red Ale COL Brew_Factory_Name VAL Iron Horse Brewery COL Style VAL American Strong Ale COL ABV VAL - 
-COL Beer_Name VAL Figueroa Mountain / Pizza Port Shark Lips Imperial Red Ale COL Brew_Factory_Name VAL Figueroa Mountain Brewing COL Style VAL American Strong Ale COL ABV VAL 8 % 
-COL Beer_Name VAL Sick N Twisted Pleasure Victim Amber Ale COL Brew_Factory_Name VAL Sick N Twisted Brewing Company COL Style VAL Amber Ale COL ABV VAL 5.50 % 
-COL Beer_Name VAL Red Headed Slut Amber Ale COL Brew_Factory_Name VAL Twisted K-8 Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 6.50 % 
 COL Beer_Name VAL Mountain City Amber Ale COL Brew_Factory_Name VAL Tommyknocker Brewery COL Style VAL American Amber / Red Ale COL ABV VAL 5.40 % 
 COL Beer_Name VAL Willoughby American Amber Ale COL Brew_Factory_Name VAL Willoughby Brewing COL Style VAL American Amber / Red Ale COL ABV VAL 4.90 % 
 COL Beer_Name VAL Riverbend Barrel Aged Right Said Red COL Brew_Factory_Name VAL Riverbend Brewing & Sports Pub COL Style VAL American Strong Ale COL ABV VAL 9.20 % 
@@ -157,3 +86,74 @@ COL Beer_Name VAL Big Red Balls COL Brew_Factory_Name VAL Hillcrest Brewing Comp
 COL Beer_Name VAL Big Bear Lake Sidewinder Red Ale COL Brew_Factory_Name VAL Big Bear Lake Brewing Company COL Style VAL Amber Ale COL ABV VAL 8.50 % 
 COL Beer_Name VAL Red Hopper ( Imperial Red Ale ) COL Brew_Factory_Name VAL Black Acre Brewing Co. . COL Style VAL American Amber / Red Ale COL ABV VAL 6.20 % 
 COL Beer_Name VAL Real McCoy Amber Ale COL Brew_Factory_Name VAL Mammoth Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 4.50 % 
+COL Beer_Name VAL Upland Easy Chair Amber Ale COL Brew_Factory_Name VAL Upland Brewing Company COL Style VAL Amber Ale COL ABV VAL 5.60 % 
+COL Beer_Name VAL Brew Kahuna NW Red Ale COL Brew_Factory_Name VAL Sky High Brewing COL Style VAL American Amber / Red Ale COL ABV VAL 5.20 % 
+COL Beer_Name VAL Clifford 's Big Red Ale COL Brew_Factory_Name VAL Funky Buddha Brewery COL Style VAL American Amber / Red Ale COL ABV VAL 9.70 % 
+COL Beer_Name VAL Fox and Hound Red Fox Amber Ale COL Brew_Factory_Name VAL Anheuser-Busch InBev COL Style VAL Amber Ale COL ABV VAL 5.10 % 
+COL Beer_Name VAL Heavy Seas Desert Island Series American Honey Amber Ale COL Brew_Factory_Name VAL Heavy Seas Brewing Company COL Style VAL Amber Ale COL ABV VAL 4.90 % 
+COL Beer_Name VAL Red Dirt Imperial Red Ale COL Brew_Factory_Name VAL Wiley Roots Brewing Co COL Style VAL American Amber / Red Ale COL ABV VAL 8.20 % 
+COL Beer_Name VAL Mammoth Real McCoy Amber Ale COL Brew_Factory_Name VAL Mammoth Brewing Company COL Style VAL Altbier COL ABV VAL 4.50 % 
+COL Beer_Name VAL Rock Bottom Red Ale COL Brew_Factory_Name VAL Rock Bottom Restaurant & Brewery COL Style VAL American Amber / Red Ale COL ABV VAL 5.60 % 
+COL Beer_Name VAL Big Time Lift Ticket American Red Ale COL Brew_Factory_Name VAL Big Time Brewery COL Style VAL India Pale Ale &#40; IPA &#41; COL ABV VAL 7 % 
+COL Beer_Name VAL Ballast Point Tongue Buckler Imperial Red Ale COL Brew_Factory_Name VAL Ballast Point Brewing Company COL Style VAL American Strong Ale COL ABV VAL 10 % 
+COL Beer_Name VAL Hollywood Beach Red Tide Amber Ale COL Brew_Factory_Name VAL Hollywood Beach Brewing Company COL Style VAL Amber Ale COL ABV VAL 5.20 % 
+COL Beer_Name VAL 406 Imperial Red Ale COL Brew_Factory_Name VAL 406 Brewing Company COL Style VAL American Strong Ale COL ABV VAL 9.20 % 
+COL Beer_Name VAL Sanibel Red Island Ale COL Brew_Factory_Name VAL Point Ybel Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 5.60 % 
+COL Beer_Name VAL 23rd Street Pumpkin Ale Bourbon Barrel Aged COL Brew_Factory_Name VAL 23rd Street Brewery COL Style VAL Specialty Grain COL ABV VAL - 
+COL Beer_Name VAL Rock Bottom Orland Park King of Hearts Imperial Red Ale COL Brew_Factory_Name VAL Rock Bottom Orland Park COL Style VAL American Strong Ale COL ABV VAL 7.60 % 
+COL Beer_Name VAL Outpost Mr. Grain Jeans Organic Amber Ale COL Brew_Factory_Name VAL Lakefront Brewery COL Style VAL Amber Ale COL ABV VAL 5.50 % 
+COL Beer_Name VAL Baird Red Rose Amber Ale COL Brew_Factory_Name VAL Baird Brewing Co. . COL Style VAL California Common COL ABV VAL 5.40 % 
+COL Beer_Name VAL Legends of the Bay Giant_s Tomb COL Brew_Factory_Name VAL Hockley Valley Brewing & Malting Company COL Style VAL Amber Ale COL ABV VAL 5 % 
+COL Beer_Name VAL Big Bear Mountain Orange Blossom Amber Ale COL Brew_Factory_Name VAL Big Bear Mountain Brewery COL Style VAL Fruit Beer COL ABV VAL 4.50 % 
+COL Beer_Name VAL Sierra Andina Alpamayo Amber Ale COL Brew_Factory_Name VAL Sierra Andina COL Style VAL Amber Ale COL ABV VAL 5.80 % 
+COL Beer_Name VAL Double Dragon Imperial Red Ale COL Brew_Factory_Name VAL Phillips Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 8.20 % 
+COL Beer_Name VAL Rocket City Red COL Brew_Factory_Name VAL Straight To Ale COL Style VAL American Amber / Red Ale COL ABV VAL 5.00 % 
+COL Beer_Name VAL Amber Waves Ale COL Brew_Factory_Name VAL Capitol City Brewing COL Style VAL American Amber / Red Ale COL ABV VAL 5.40 % 
+COL Beer_Name VAL Aqula American Amber Ale COL Brew_Factory_Name VAL Bier Kaffee Aqula COL Style VAL American Amber / Red Ale COL ABV VAL 4.50 % 
+COL Beer_Name VAL Tongue Buckler ( Bourbon Barrel Aged ) COL Brew_Factory_Name VAL Ballast Point Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 10.00 % 
+COL Beer_Name VAL Main Street Amber Ale COL Brew_Factory_Name VAL Fifty West Brewing Co COL Style VAL American Amber / Red Ale COL ABV VAL 4.60 % 
+COL Beer_Name VAL Amazon Beer Priprioca Red Ale COL Brew_Factory_Name VAL Amazon Beer COL Style VAL Amber Ale COL ABV VAL 6 % 
+COL Beer_Name VAL Willoughby American Amber Ale COL Brew_Factory_Name VAL Willoughby Brewing Co. . COL Style VAL Amber Ale COL ABV VAL 5.50 % 
+COL Beer_Name VAL Ulysses Imperial Red Ale COL Brew_Factory_Name VAL Barley 's Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL - 
+COL Beer_Name VAL Imperial Red Ale ( Spring Seasonal ) COL Brew_Factory_Name VAL Edge Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 8.50 % 
+COL Beer_Name VAL Red Rocket Amber Ale COL Brew_Factory_Name VAL Third Base Sports Bar & Brewery COL Style VAL American Amber / Red Ale COL ABV VAL 6.40 % 
+COL Beer_Name VAL Lavery Imperial Red Ale &#40; IRA &#41; COL Brew_Factory_Name VAL Lavery Brewing Company COL Style VAL American Strong Ale COL ABV VAL 8.20 % 
+COL Beer_Name VAL 21st Amendment Bourbon Barrel Lower da Boom Barleywine COL Brew_Factory_Name VAL 21st Amendment Brewery COL Style VAL Barley Wine COL ABV VAL 9.50 % 
+COL Beer_Name VAL Lompoc Bourbon Barrel Aged Old Tavern Rat COL Brew_Factory_Name VAL Lompoc Brewing COL Style VAL Barley Wine COL ABV VAL 9.70 % 
+COL Beer_Name VAL Figure Eight Bourbon Barrel Aged Jumbo Love COL Brew_Factory_Name VAL Figure Eight Brewing COL Style VAL Barley Wine COL ABV VAL - 
+COL Beer_Name VAL Bourbon Barrel Aged Horus Imperial Red COL Brew_Factory_Name VAL Elevator Brewery & Draught Haus COL Style VAL American Amber / Red Ale COL ABV VAL 12.00 % 
+COL Beer_Name VAL Liberty Street Red Glare Amber Ale COL Brew_Factory_Name VAL Liberty Street Brewing Company COL Style VAL Amber Ale COL ABV VAL 5.20 % 
+COL Beer_Name VAL Hillcrest Big Red Balls COL Brew_Factory_Name VAL Hillcrest Brewing Company COL Style VAL Imperial IPA COL ABV VAL 8 % 
+COL Beer_Name VAL Kettle House Bourbon Barrel Road Rash Imperial Red Ale COL Brew_Factory_Name VAL Kettle House Brewing Company COL Style VAL American Strong Ale COL ABV VAL 13 % 
+COL Beer_Name VAL Bushfire American Red COL Brew_Factory_Name VAL Granite Falls Brewing Co. . COL Style VAL American Amber / Red Ale COL ABV VAL 5.00 % 
+COL Beer_Name VAL Kern River Dirty Hippie Imperial Red Ale COL Brew_Factory_Name VAL Kern River Brewing COL Style VAL American Strong Ale COL ABV VAL 8 % 
+COL Beer_Name VAL Arrow Point Amber COL Brew_Factory_Name VAL Bainbridge Island Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 5.40 % 
+COL Beer_Name VAL Green Flash Hop Head Red Ale COL Brew_Factory_Name VAL Green Flash Brewing Co. . COL Style VAL American Amber / Red Ale COL ABV VAL 8.10 % 
+COL Beer_Name VAL Marble Imperial Red Ale COL Brew_Factory_Name VAL Marble Brewery COL Style VAL American Strong Ale COL ABV VAL 9 % 
+COL Beer_Name VAL Third Base Red Rocket Amber Ale COL Brew_Factory_Name VAL Third Base Sports Bar & Brewery COL Style VAL Amber Ale COL ABV VAL 4.60 % 
+COL Beer_Name VAL Jazz Beer Tarraco Amber COL Brew_Factory_Name VAL Tarraco Beer COL Style VAL American Amber / Red Ale COL ABV VAL 6.90 % 
+COL Beer_Name VAL Lower De Boom Barleywine COL Brew_Factory_Name VAL 21st Amendment Brewery COL Style VAL American Barleywine COL ABV VAL 11.50 % 
+COL Beer_Name VAL Red Fox Amber Ale COL Brew_Factory_Name VAL Rogue Ales COL Style VAL American Amber / Red Ale COL ABV VAL - 
+COL Beer_Name VAL Honey Amber Ale COL Brew_Factory_Name VAL RJ Rockers Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 5.80 % 
+COL Beer_Name VAL Granite Falls Bushfire American Red Ale COL Brew_Factory_Name VAL Granite Falls Brewing Company COL Style VAL Amber Ale COL ABV VAL 5 % 
+COL Beer_Name VAL Three Heads Buffalo Soul Jah Imperial Red Ale COL Brew_Factory_Name VAL Custom Brewcrafters COL Style VAL American Strong Ale COL ABV VAL 9.20 % 
+COL Beer_Name VAL Intuition Barrel Aged Riverside Red COL Brew_Factory_Name VAL Intuition Ale Works COL Style VAL Amber Ale COL ABV VAL 7.80 % 
+COL Beer_Name VAL Red Dread Imperial Red Ale COL Brew_Factory_Name VAL Bitter Root Brewing COL Style VAL American Amber / Red Ale COL ABV VAL 8.24 % 
+COL Beer_Name VAL AleSmith YuleSmith &#40; Winter &#41; Imperial Red Ale COL Brew_Factory_Name VAL AleSmith Brewing Company COL Style VAL American Strong Ale COL ABV VAL 8.50 % 
+COL Beer_Name VAL Black Shirt American India Red Ale COL Brew_Factory_Name VAL Black Shirt Brewing Company COL Style VAL American Strong Ale COL ABV VAL 7.09 % 
+COL Beer_Name VAL Alley Kat Rocky Mountain Red Ale &#40; The Cheesecake Cafe &#41; COL Brew_Factory_Name VAL Alley Kat Brewing Company COL Style VAL Irish Ale COL ABV VAL - 
+COL Beer_Name VAL Legends Of The Bay Giant 's Tomb COL Brew_Factory_Name VAL Hockley Valley Brewing Co. . COL Style VAL American Amber / Red Ale COL ABV VAL 5.00 % 
+COL Beer_Name VAL Unite Red Rye Ale COL Brew_Factory_Name VAL The Pike Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 4.60 % 
+COL Beer_Name VAL Lagunitas Imperial Red Ale COL Brew_Factory_Name VAL Lagunitas Brewing Company &#40; Heineken &#41; COL Style VAL American Strong Ale COL ABV VAL 7.80 % 
+COL Beer_Name VAL Twisted Stick Amber Ale COL Brew_Factory_Name VAL Portneuf Valley Brewing COL Style VAL American Amber / Red Ale COL ABV VAL - 
+COL Beer_Name VAL Three Sheets Barleywine ( Syrah Barrel Aged ) COL Brew_Factory_Name VAL Ballast Point Brewing Company COL Style VAL American Barleywine COL ABV VAL 9.00 % 
+COL Beer_Name VAL Amber Ale With Spanish Orange COL Brew_Factory_Name VAL Dangerous Man Brewing COL Style VAL American Amber / Red Ale COL ABV VAL 6.00 % 
+COL Beer_Name VAL Pike Old Bawdy Barley Wine COL Brew_Factory_Name VAL The Pike Brewing Company COL Style VAL American Barleywine COL ABV VAL 9.90 % 
+COL Beer_Name VAL Bristol Old No. 23 Barley Wine COL Brew_Factory_Name VAL Bristol Brewing Company COL Style VAL Barley Wine COL ABV VAL 11.25 % 
+COL Beer_Name VAL Lavery Imperial Red Ale COL Brew_Factory_Name VAL Lavery Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 8.20 % 
+COL Beer_Name VAL Two Brothers Revelry Imperial Red Ale COL Brew_Factory_Name VAL Two Brothers Brewing Company COL Style VAL American Strong Ale COL ABV VAL 9.50 % 
+COL Beer_Name VAL Golden City Centurion Barleywine Ale COL Brew_Factory_Name VAL Golden City Brewery COL Style VAL Barley Wine COL ABV VAL 11.20 % 
+COL Beer_Name VAL Iron Horse Fresh Hop Imperial Red Ale COL Brew_Factory_Name VAL Iron Horse Brewery COL Style VAL American Strong Ale COL ABV VAL - 
+COL Beer_Name VAL Figueroa Mountain / Pizza Port Shark Lips Imperial Red Ale COL Brew_Factory_Name VAL Figueroa Mountain Brewing COL Style VAL American Strong Ale COL ABV VAL 8 % 
+COL Beer_Name VAL Sick N Twisted Pleasure Victim Amber Ale COL Brew_Factory_Name VAL Sick N Twisted Brewing Company COL Style VAL Amber Ale COL ABV VAL 5.50 % 
+COL Beer_Name VAL Red Headed Slut Amber Ale COL Brew_Factory_Name VAL Twisted K-8 Brewing Company COL Style VAL American Amber / Red Ale COL ABV VAL 6.50 % 
