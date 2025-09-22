@@ -10,3 +10,4 @@ transformers==4.9.2
 tqdm==4.41.0
 jsonlines==1.2.0
 nltk==3.5
+tensorboardX
