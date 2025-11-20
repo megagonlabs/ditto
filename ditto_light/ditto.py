@@ -8,12 +8,15 @@ import random
 import numpy as np
 import sklearn.metrics as metrics
 import argparse
-
+import logging 
 from .dataset import DittoDataset
 from torch.utils import data
-from transformers import AutoModel, AdamW, get_linear_schedule_with_warmup
+from torch.optim import AdamW
+from transformers import AutoModel, get_linear_schedule_with_warmup
 from tensorboardX import SummaryWriter
-from apex import amp
+from torch.amp import autocast, GradScaler 
+
+logging.basicConfig(level=logging.INFO)
 
 lm_mp = {'roberta': 'roberta-base',
          'distilbert': 'distilbert-base-uncased'}
@@ -63,13 +66,14 @@ class DittoModel(nn.Module):
         return self.fc(enc) # .squeeze() # .sigmoid()
 
 
-def evaluate(model, iterator, threshold=None):
+def evaluate(model, iterator, threshold=None, use_amp=False):
     """Evaluate a model on a validation/test dataset
 
     Args:
         model (DMModel): the EM model
         iterator (Iterator): the valid/test dataset iterator
         threshold (float, optional): the threshold on the 0-class
+        use_amp (bool, optional): whether to use automatic mixed precision
 
     Returns:
         float: the F1 score
@@ -79,10 +83,13 @@ def evaluate(model, iterator, threshold=None):
     all_p = []
     all_y = []
     all_probs = []
+    device_type = 'cuda' if model.device == 'cuda' else 'cpu'
     with torch.no_grad():
         for batch in iterator:
             x, y = batch
-            logits = model(x)
+            ctx = autocast(device_type=device_type, dtype=torch.float16, enabled=use_amp)
+            with ctx:
+                logits = model(x)
             probs = logits.softmax(dim=1)[:, 1]
             all_probs += probs.cpu().numpy().tolist()
             all_y += y.cpu().numpy().tolist()
@@ -105,7 +112,7 @@ def evaluate(model, iterator, threshold=None):
         return f1, best_th
 
 
-def train_step(train_iter, model, optimizer, scheduler, hp):
+def train_step(train_iter, model, optimizer, scheduler, scaler=None):
     """Perform a single training step
 
     Args:
@@ -113,32 +120,43 @@ def train_step(train_iter, model, optimizer, scheduler, hp):
         model (DMModel): the model
         optimizer (Optimizer): the optimizer (Adam or AdamW)
         scheduler (LRScheduler): learning rate scheduler
-        hp (Namespace): other hyper-parameters (e.g., fp16)
+        scaler (GradScaler): the gradient scaler
 
     Returns:
         None
     """
     criterion = nn.CrossEntropyLoss()
+    use_autocast = scaler is not None
+
     # criterion = nn.MSELoss()
     for i, batch in enumerate(train_iter):
         optimizer.zero_grad()
 
         if len(batch) == 2:
             x, y = batch
-            prediction = model(x)
+            ctx = autocast(device_type=model.device, dtype=torch.float16, enabled=use_autocast)
+            with ctx:
+                prediction = model(x)
+                loss = criterion(prediction, y.to(model.device))
+
         else:
             x1, x2, y = batch
-            prediction = model(x1, x2)
+            ctx = autocast(device_type=model.device, dtype=torch.float16, enabled=use_autocast)
+            with ctx:
+                prediction = model(x1, x2)
+                loss = criterion(prediction, y.to(model.device))
+        
+        if use_autocast:
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
 
-        loss = criterion(prediction, y.to(model.device))
-
-        if hp.fp16:
-            with amp.scale_loss(loss, optimizer) as scaled_loss:
-                scaled_loss.backward()
         else:
             loss.backward()
-        optimizer.step()
+            optimizer.step()
+        
         scheduler.step()
+
         if i % 10 == 0: # monitoring
             print(f"step: {i}, loss: {loss.item()}")
         del loss
@@ -153,7 +171,7 @@ def train(trainset, validset, testset, run_tag, hp):
         testset (DittoDataset): the test set
         run_tag (str): the tag of the run
         hp (Namespace): Hyper-parameters (e.g., batch_size,
-                        learning rate, fp16)
+                        learning rate, amp)
 
     Returns:
         None
@@ -177,15 +195,25 @@ def train(trainset, validset, testset, run_tag, hp):
                                  collate_fn=padder)
 
     # initialize model, optimizer, and LR scheduler
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    # if getattr(hp, 'use_gpu', False):
+    if hp.use_gpu:
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    else:
+        device = 'cpu'
+        
     model = DittoModel(device=device,
                        lm=hp.lm,
                        alpha_aug=hp.alpha_aug)
-    model = model.cuda()
+    model = model.to(device)
     optimizer = AdamW(model.parameters(), lr=hp.lr)
+    
 
-    if hp.fp16:
-        model, optimizer = amp.initialize(model, optimizer, opt_level='O2')
+    scaler = None 
+
+    if hp.amp and device == 'cuda':
+        scaler = GradScaler() 
+        
+
     num_steps = (len(trainset) // hp.batch_size) * hp.n_epochs
     scheduler = get_linear_schedule_with_warmup(optimizer,
                                                 num_warmup_steps=0,
@@ -198,24 +226,25 @@ def train(trainset, validset, testset, run_tag, hp):
     for epoch in range(1, hp.n_epochs+1):
         # train
         model.train()
-        train_step(train_iter, model, optimizer, scheduler, hp)
+        train_step(train_iter, model, optimizer, scheduler, scaler=scaler)
 
         # eval
         model.eval()
-        dev_f1, th = evaluate(model, valid_iter)
-        test_f1 = evaluate(model, test_iter, threshold=th)
+        use_amp = hp.amp and device == 'cuda'
+        dev_f1, th = evaluate(model, valid_iter, use_amp=use_amp)
+        test_f1 = evaluate(model, test_iter, threshold=th, use_amp=use_amp)
 
         if dev_f1 > best_dev_f1:
             best_dev_f1 = dev_f1
             best_test_f1 = test_f1
             if hp.save_model:
                 # create the directory if not exist
-                directory = os.path.join(hp.logdir, hp.task)
+                directory = os.path.normpath(os.path.join(hp.logdir, hp.task))
                 if not os.path.exists(directory):
                     os.makedirs(directory)
 
                 # save the checkpoints for each component
-                ckpt_path = os.path.join(hp.logdir, hp.task, 'model.pt')
+                ckpt_path = os.path.normpath(os.path.join(hp.logdir, hp.task, f'model.pt'))
                 ckpt = {'model': model.state_dict(),
                         'optimizer': optimizer.state_dict(),
                         'scheduler': scheduler.state_dict(),

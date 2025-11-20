@@ -15,7 +15,7 @@ import traceback
 
 from torch.utils import data
 from tqdm import tqdm
-from apex import amp
+from torch.amp import autocast
 from scipy.special import softmax
 
 from ditto_light.ditto import evaluate, DittoModel
@@ -73,7 +73,8 @@ def to_str(ent1, ent2, summarizer=None, max_len=256, dk_injector=None):
 def classify(sentence_pairs, model,
              lm='distilbert',
              max_len=256,
-             threshold=None):
+             threshold=None,
+             use_amp=False):
     """Apply the MRPC model.
 
     Args:
@@ -81,6 +82,7 @@ def classify(sentence_pairs, model,
         model (MultiTaskNet): the model in pytorch
         max_len (int, optional): the max sequence length
         threshold (float, optional): the threshold of the 0's class
+        use_amp (bool, optional): whether to use automatic mixed precision
 
     Returns:
         list of float: the scores of the pairs
@@ -100,11 +102,16 @@ def classify(sentence_pairs, model,
     # prediction
     all_probs = []
     all_logits = []
+    device_type = 'cuda' if model.device == 'cuda' else 'cpu'
+    model.eval()
+
     with torch.no_grad():
         # print('Classification')
         for i, batch in enumerate(iterator):
             x, _ = batch
-            logits = model(x)
+            ctx = autocast(device_type=device_type, dtype=torch.float16, enabled=use_amp)
+            with ctx:
+                logits = model(x)
             probs = logits.softmax(dim=1)[:, 1]
             all_probs += probs.cpu().numpy().tolist()
             all_logits += logits.cpu().numpy().tolist()
@@ -122,7 +129,8 @@ def predict(input_path, output_path, config,
             lm='distilbert',
             max_len=256,
             dk_injector=None,
-            threshold=None):
+            threshold=None,
+            use_amp=False):
     """Run the model over the input file containing the candidate entry pairs
 
     Args:
@@ -135,6 +143,7 @@ def predict(input_path, output_path, config,
         max_len (int, optional): the max sequence length
         dk_injector (DKInjector, optional): the domain-knowledge injector
         threshold (float, optional): the threshold of the 0's class
+        use_amp (bool, optional): Whether to use automatic mixed precision 
 
     Returns:
         None
@@ -144,7 +153,8 @@ def predict(input_path, output_path, config,
     def process_batch(rows, pairs, writer):
         predictions, logits = classify(pairs, model, lm=lm,
                                        max_len=max_len,
-                                       threshold=threshold)
+                                       threshold=threshold,
+                                       use_amp=use_amp)
         # try:
         #     predictions, logits = classify(pairs, model, lm=lm,
         #                                    max_len=max_len,
@@ -159,11 +169,17 @@ def predict(input_path, output_path, config,
                 'match_confidence': score[int(pred)]}
             writer.write(output)
 
+
+
+    # # # Normalize paths for cross-platform compatibility
+    input_path = os.path.normpath(input_path)
+    output_path = os.path.normpath(output_path)
+    
     # input_path can also be train/valid/test.txt
     # convert to jsonlines
     if '.txt' in input_path:
         with jsonlines.open(input_path + '.jsonl', mode='w') as writer:
-            for line in open(input_path):
+            for line in open(input_path, encoding='utf-8'):
                 writer.write(line.split('\t')[:2])
         input_path += '.jsonl'
 
@@ -180,7 +196,9 @@ def predict(input_path, output_path, config,
                 process_batch(rows, pairs, writer)
                 pairs.clear()
                 rows.clear()
-
+                
+        # After the batch processing, if there are remaining items, 
+        # it processes them 
         if len(pairs) > 0:
             process_batch(rows, pairs, writer)
 
@@ -224,25 +242,28 @@ def tune_threshold(config, model, hp):
 
     # acc, prec, recall, f1, v_loss, th = eval_classifier(model, valid_iter,
     #                                                     get_threshold=True)
-    f1, th = evaluate(model, valid_iter, threshold=None)
+    use_amp = hp.amp and torch.cuda.is_available()
+    f1, th = evaluate(model, valid_iter, threshold=None, use_amp=use_amp)
 
     # verify F1
     set_seed(123)
-    predict(validset, "tmp.jsonl", config, model,
+    tmp_path = os.path.normpath("tmp.jsonl")
+    predict(validset, tmp_path, config, model,
             summarizer=summarizer,
             max_len=hp.max_len,
             lm=hp.lm,
             dk_injector=injector,
-            threshold=th)
+            threshold=th,
+            use_amp=hp.amp)
 
     predicts = []
-    with jsonlines.open("tmp.jsonl", mode="r") as reader:
+    with jsonlines.open(tmp_path, mode="r") as reader:
         for line in reader:
             predicts.append(int(line['match']))
-    os.system("rm tmp.jsonl")
+    os.remove(tmp_path)
 
     labels = []
-    with open(validset) as fin:
+    with open(validset, encoding='utf-8') as fin:
         for line in fin:
             labels.append(int(line.split('\t')[-1]))
 
@@ -254,7 +275,7 @@ def tune_threshold(config, model, hp):
 
 
 
-def load_model(task, path, lm, use_gpu, fp16=True):
+def load_model(task, path, lm, use_gpu):
     """Load a model for a specific task.
 
     Args:
@@ -262,14 +283,14 @@ def load_model(task, path, lm, use_gpu, fp16=True):
         path (str): the path of the checkpoint directory
         lm (str): the language model
         use_gpu (boolean): whether to use gpu
-        fp16 (boolean, optional): whether to use fp16
 
     Returns:
         Dictionary: the task config
         MultiTaskNet: the model
     """
     # load models
-    checkpoint = os.path.join(path, task, 'model.pt')
+    checkpoint = os.path.normpath(os.path.join(path, task, 'model.pt'))
+
     if not os.path.exists(checkpoint):
         raise ModelNotFoundError(checkpoint)
 
@@ -289,8 +310,9 @@ def load_model(task, path, lm, use_gpu, fp16=True):
     model.load_state_dict(saved_state['model'])
     model = model.to(device)
 
-    if fp16 and 'cuda' in device:
-        model = amp.initialize(model, opt_level='O2')
+    # Note: For inference, we don't wrap the model with AMP.
+    # Instead, we use autocast context manager during forward pass.
+    # The amp parameter is stored for use in classify() function.
 
     return config, model
 
@@ -302,7 +324,7 @@ if __name__ == "__main__":
     parser.add_argument("--output_path", type=str, default='output/matched_small.jsonl')
     parser.add_argument("--lm", type=str, default='distilbert')
     parser.add_argument("--use_gpu", dest="use_gpu", action="store_true")
-    parser.add_argument("--fp16", dest="fp16", action="store_true")
+    parser.add_argument("--amp", dest="amp", action="store_true")
     parser.add_argument("--checkpoint_path", type=str, default='checkpoints/')
     parser.add_argument("--dk", type=str, default=None)
     parser.add_argument("--summarize", dest="summarize", action="store_true")
@@ -312,7 +334,7 @@ if __name__ == "__main__":
     # load the models
     set_seed(123)
     config, model = load_model(hp.task, hp.checkpoint_path,
-                       hp.lm, hp.use_gpu, hp.fp16)
+                       hp.lm, hp.use_gpu)
 
     summarizer = dk_injector = None
     if hp.summarize:
@@ -333,4 +355,5 @@ if __name__ == "__main__":
             max_len=hp.max_len,
             lm=hp.lm,
             dk_injector=dk_injector,
-            threshold=threshold)
+            threshold=threshold,
+            use_amp=hp.amp)

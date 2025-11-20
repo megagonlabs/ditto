@@ -40,7 +40,8 @@ class Summarizer:
                self.config['testset']]
         content = []
         for fn in fns:
-            with open(fn) as fin:
+            fn = os.path.normpath(fn)  # Normalize path separators
+            with open(fn, encoding='utf-8') as fin:
                 for line in fin:
                     LL = line.split('\t')
                     if len(LL) > 2:
@@ -127,9 +128,12 @@ class Summarizer:
             str: the output file name
         """
         out_fn = input_fn + '.su'
+        # Normalize path separators for cross-platform compatibility
+        out_fn = os.path.normpath(out_fn)
+        input_fn = os.path.normpath(input_fn)
         if not os.path.exists(out_fn) or \
            os.stat(out_fn).st_size == 0 or overwrite:
-            with open(out_fn, 'w') as fout:
-                for line in open(input_fn):
+            with open(out_fn, 'w', encoding='utf-8') as fout:
+                for line in open(input_fn, encoding='utf-8'):
                     fout.write(self.transform(line, max_len=max_len))
         return out_fn
